@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Huntrix OST Playlist</title>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-1: #0d0d0d;
+      --bg-2: #1a1a1a;
+      --accent1: #ff00ff;
+      --accent2: #00ffff;
+      --glass: rgba(255,255,255,0.04);
+      --muted: rgba(255,255,255,0.75);
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(135deg,var(--bg-1),var(--bg-2));
+      color:#fff;
+      min-height:100vh;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:18px 28px;
+      backdrop-filter: blur(6px);
+      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-bottom:1px solid rgba(255,255,255,0.02);
+    }
+
+    .brand { font-weight:800; letter-spacing:2px; color:var(--accent1); font-size:1.1rem; text-decoration:none; }
+    nav a { color:var(--muted); margin-left:12px; text-decoration:none; font-weight:600; }
+    nav a:hover { color:#fff; text-shadow:0 0 10px rgba(255,0,255,0.12); }
+
+    .container{
+      max-width:1100px;
+      margin:34px auto;
+      padding:24px;
+    }
+
+    .hero{
+      text-align:center;
+      margin-bottom:22px;
+    }
+    .hero h1{
+      margin:0;
+      font-size:2rem;
+      text-shadow:0 0 18px rgba(255,0,255,0.06);
+    }
+    .hero p{ margin:8px 0 0; color:var(--muted); }
+
+    .now-playing {
+      margin-top:10px;
+      color:var(--muted);
+      font-size:0.95rem;
+      text-align:center;
+    }
+
+    .song-list{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+      margin-top:18px;
+    }
+
+    .song-card{
+      background: var(--glass);
+      padding:14px;
+      border-radius:14px;
+      border:1px solid transparent;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      min-height:150px;
+    }
+
+    .song-card:hover{
+      transform: translateY(-6px);
+      border-color: rgba(255,0,255,0.12);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+
+    .song-meta{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+
+    .song-art{
+      width:64px;
+      height:64px;
+      border-radius:8px;
+      background:linear-gradient(45deg,var(--accent1),var(--accent2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:700;
+      font-size:1.1rem;
+      color:#111;
+      flex:0 0 64px;
+    }
+
+    .song-title{
+      text-align:left;
+    }
+    .song-title h3{ margin:0; font-size:1.05rem; }
+    .song-title p{ margin:4px 0 0; color:var(--muted); font-size:0.85rem; }
+
+    .audio-row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+    }
+
+    audio {
+      width:100%;
+      outline:none;
+      background:transparent;
+    }
+
+    .card-actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:flex-end;
+      margin-top:6px;
+    }
+
+    .btn{
+      padding:8px 12px;
+      border-radius:999px;
+      text-decoration: none;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      color:#111;
+      box-shadow: 0 8px 24px rgba(0,255,255,0.04);
+    }
+
+    .btn.secondary{
+      background:transparent;
+      border:1px solid rgba(255,255,255,0.06);
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    footer{
+      text-align:center;
+      margin-top:28px;
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    @media (max-width:640px){
+      header{ padding:12px 14px; }
+      .hero h1{ font-size:1.6rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="brand" href="home.html">HUNTRIX</a>
+    <nav>
+      <a href="home.html">Home</a>
+      <a href="character.html" target="_blank">Characters</a>
+      <a href="Gallery.html" target="_blank">Gallery</a>
+      <a href="#" aria-current="page">Songs</a>
+      <a href="about.html">About</a>
+      <a href="#" class="btn secondary" id="download-all" title="Download all (if available)">Download</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1>🎵 Huntrix — Official OST Playlist</h1>
+      <p>Cool tracks, cinematic vibes. Click play and let the Huntrix haunt your headphones.</p>
+      <div class="now-playing" id="nowPlaying">Nothing playing — pick a track.</div>
+    </section>
+
+    <section class="song-list" id="songList">
+      <!-- JS will populate cards here -->
+    </section>
+
+    <footer>
+      <p>Huntrix OST Playlist &copy; 2023</p>
+      <p>Made with ❤️ by the Huntrix Team</p>
+  </main>
+
+<script>
+  // === Edit this array if you add/remove files ===
+  const tracks = [
+    {
+      id: 1,
+      title: "Golden",
+      file: "./images/Golden(128k).m4a",
+      art: "", // optional: path to image
+      desc: "High shine, high stakes."
+    },
+    {
+      id: 2,
+      title: "How it's done",
+      file: "./images/How_It’s_Done(128k).m4a",
+      art: "",
+      desc: "Confidence and choreography."
+    },
+    {
+      id: 3,
+      title: "Takedown",
+      file: "./images/TAKEDOWN__JEONGYEON,_JIHYO,_CHAEYOUNG_(128k).m4a",
+      art: "",
+      desc: "Punchy banger for the showdown."
+    },
+    {
+      id: 4,
+      title: "What it sounds like",
+      file: "./images/what-it-sounds-like.m4a",
+      art: "",
+      desc: "Placeholder — add file path to play."
+    }
+  ];
+
+  const listEl = document.getElementById('songList');
+  const nowEl = document.getElementById('nowPlaying');
+
+  // create cards
+  tracks.forEach(track => {
+    const card = document.createElement('article');
+    card.className = 'song-card';
+
+    const meta = document.createElement('div');
+    meta.className = 'song-meta';
+    const art = document.createElement('div');
+    art.className = 'song-art';
+    art.textContent = track.title.split(' ').map(s=>s[0]).slice(0,2).join('').toUpperCase();
+
+    const title = document.createElement('div');
+    title.className = 'song-title';
+    title.innerHTML = `<h3>${track.title}</h3><p>${track.desc || ''}</p>`;
+
+    meta.appendChild(art);
+    meta.appendChild(title);
+
+    // audio element (we set src via JS with encodeURI to handle spaces/apostrophes)
+    const audioRow = document.createElement('div');
+    audioRow.className = 'audio-row';
+
+    const audio = document.createElement('audio');
+    audio.controls = true;
+    // set source safely
+    try {
+      const safePath = track.file ? encodeURI(track.file) : '';
+      if (safePath) {
+        const src = document.createElement('source');
+        src.src = safePath;
+        src.type = 'audio/mpeg';
+        audio.appendChild(src);
+      }
+    } catch(e){ console.warn("Error encoding path", e); }
+
+    // card actions
+    const actions = document.createElement('div');
+    actions.className = 'card-actions';
+
+    // download button
+    const dl = document.createElement('a');
+    dl.className = 'btn';
+    dl.textContent = 'Download';
+    if (track.file) {
+      dl.href = encodeURI(track.file);
+      dl.setAttribute('download', '');
+    } else {
+      dl.classList.add('secondary');
+      dl.textContent = 'No file';
+      dl.href = '#';
+      dl.onclick = (e)=> e.preventDefault();
+    }
+
+    actions.appendChild(dl);
+
+    audioRow.appendChild(audio);
+    audioRow.appendChild(actions);
+
+    card.appendChild(meta);
+    card.appendChild(audioRow);
+
+    listEl.appendChild(card);
+
+    // update now playing when audio starts
+    audio.addEventListener('play', () => {
+      pauseAllExcept(audio);
+      nowEl.textContent = `Now playing: ${track.title}`;
+    });
+
+    audio.addEventListener('pause', () => {
+      // if nothing else playing, reset line after small timeout
+      setTimeout(()=> {
+        if (!anyPlaying()) nowEl.textContent = 'Nothing playing — pick a track.';
+      }, 300);
+    });
+  });
+
+  // pause other audios when one plays
+  function pauseAllExcept(activeAudio){
+    document.querySelectorAll('audio').forEach(a => {
+      if (a !== activeAudio) a.pause();
+    });
+  }
+  function anyPlaying(){
+    return Array.from(document.querySelectorAll('audio')).some(a => !a.paused && !a.ended);
+  }
+
+  // Download all: zip download isn't supported client-side without libs.
+  document.getElementById('download-all').addEventListener('click', (e) => {
+    e.preventDefault();
+    alert('Browser security prevents bulk downloads from a single click. Use the individual Download buttons or zip the files server-side.');
+  });
+
+  // small UX tip: if you load via file:// you might see CORS or blocked playback — use a local dev server.
+  console.log("Huntrix OST Playlist loaded ✅");
+</script>
+</body>
+</html>

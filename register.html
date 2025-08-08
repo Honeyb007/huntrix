@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="
+    https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css">
+</head>
+<header>
+    <a href="#" class="name">HUNTRIX</a>
+        <div class="menu-btn"></div>
+        <div class="nav">
+            <div class="nav-items">
+                <a href="home.html">Home</a>
+                <a href="character.html" target="_blank">Characters</a>
+                <a href="Gallery.html" target="_top">Gallery</a>
+                <a href="songs.html">Songs</a>
+                <a href="about.html">About</a>
+                 <button> Download</button>
+
+            </div>
+            </div>
+</header>
+
+<body class="bg">
+    <div class="wrapper">
+     <form id="registerForm" >
+        <h1>Create Account</h1>
+        <div class="input-box">
+            <input type="text" name="firstName" placeholder="First-Name" required>
+            <i class='bx  bxs-user'  ></i>
+    
+        </div>
+        <div class="input-box">
+            <input type="text" name="lastName" placeholder="Last-Name" required>
+            <i class='bx  bxs-user'  ></i>
+        </div>
+        <div class="input-box">
+            <input type="email" name="email" placeholder="Email" required>
+            <i class='bx  bxs-envelope'  ></i>
+        </div>
+        <div class="input-box">
+            <input type="text" name="username" placeholder="Username" required>
+            <i class='bx  bxs-user'  ></i>
+        </div>
+        <div class="input-box">
+            <input type="password" name="password" placeholder="New Password" required>
+            <i class='bx  bxs-lock'  ></i> 
+        </div>
+        <div class="input-box">
+            <input type="password" name="confirmPassword" placeholder="Confirm Password" required>
+            <i class='bx  bxs-lock'  ></i>
+        </div>
+        
+        <button type="submit" class="btn">Create Account</button>
+        
+    </form>
+
+    </div>
+    <script>
+  console.log("Register script loaded ✅");
+</script>
+<script>
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
+  e.preventDefault(); // prevent page reload
+
+  const form = e.target;
+  const data = {
+    firstName: form.firstName.value,
+    lastName: form.lastName.value,
+    email: form.email.value,
+    username: form.username.value,
+    password: form.password.value,
+    confirmPassword: form.confirmPassword.value
+  };
+
+  // Optional: Validate passwords match here before sending
+
+  fetch('http://localhost:3000/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  })
+    .then(res => res.json())
+    .then(response => {
+      console.log('Server said:', response);
+      alert('Registration complete!');
+      window.location.href = 'login.html'; // Redirect to login page after registration
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+});
+console.log("Register.js connected!");
+
+
+
+</script>
+</body>
+</html>

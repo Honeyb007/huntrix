@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Characters</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
+    <header>
+        <a href="#" class="name">HUNTRIX</a>
+        <div class="menu-btn"></div>
+        <div class="nav">
+            <div class="nav-items">
+                <a href="home.html">Home</a>
+                <a href="character.html" target="_blank">Characters</a>
+                <a href="Gallery.html" target="_top">Gallery</a>
+                <a href="songs.html">Songs</a>
+                <a href="about.html">About</a>
+                 <button> Download</button>
+
+            </div>
+            </div>
+    </header>
+
+            <div class="char">
+            <div class="text">
+              <span>Main Characters</span>
+              <p id="char-desc">Click a character below to learn more.</p>
+             </div>
+
+            <div class="char-img">
+             <img id="big-img" src="" alt="Character Image">
+            </div>
+
+             <div class="small-img" id="thumbs">
+             <!-- Thumbnails will be added here -->
+             </div>
+            </div>
+  <script>
+           const bigImage = document.getElementById('big-img');
+           const thumbs = document.getElementById('thumbs');
+           const desc = document.getElementById('char-desc');
+
+     fetch('characters.json')
+    .then(res => res.json())
+    .then(data => {
+      data.forEach((char, index) => {
+        const img = document.createElement('img');
+        img.src = char.image;
+        img.alt = char.name;
+        img.onclick = () => {
+          bigImage.src = char.image;
+          desc.innerText = char.name + ": " + char.description;
+
+          // Remove active class from all thumbnails
+          document.querySelectorAll('#thumbs img').forEach(img => img.classList.remove('active'));
+        img.classList.add('active');
+        };
+        
+        
+        thumbs.appendChild(img);
+        
+
+        // Load first character by default
+        if (index === 0) {
+          bigImage.src = char.image;
+          desc.innerText = char.name + ": " + char.description;
+        }
+      });
+    })
+    .catch(error => {
+      console.error("Couldn't load characters 😩", error);
+    });
+
+     
+ </script>
+
+
+</body>  
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — Huntrix</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <meta name="description" content="Huntrix — a neon-drenched game world. Meet the team, read the lore, and find contact links." />
+
+  <style>
+    :root{
+      --bg-1:#0d0d0d;
+      --bg-2:#14121a;
+      --accent1:#ff00ff;
+      --accent2:#00ffff;
+      --glass: rgba(255,255,255,0.03);
+      --muted: rgba(255,255,255,0.78);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Poppins',sans-serif;
+      background: linear-gradient(135deg,var(--bg-1),var(--bg-2));
+      color:#fff;
+      -webkit-font-smoothing:antialiased;
+      line-height:1.4;
+      display:flex;
+      align-items:stretch;
+      justify-content:center;
+      padding:28px;
+    }
+
+    .shell{
+      width:min(1100px,96%);
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:26px;
+      align-items:start;
+    }
+
+    /* Left (main) */
+    .card {
+      background:var(--glass);
+      padding:22px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+    }
+
+    .brand {
+      display:flex;
+      gap:12px;
+      align-items:center;
+      margin-bottom:12px;
+    }
+    .logo {
+      width:56px;
+      height:56px;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      display:grid;
+      place-items:center;
+      color:#0b0b0b;
+      font-weight:800;
+      font-size:1.1rem;
+      box-shadow:0 8px 30px rgba(0,255,255,0.05);
+    }
+    .brand h1{ margin:0; font-size:1.2rem; letter-spacing:1px; }
+    .brand p { margin:0; color:var(--muted); font-size:.9rem; }
+
+    .lede {
+      font-size:1.05rem;
+      margin:14px 0 18px;
+      color:var(--muted);
+    }
+
+    .section-title {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin:18px 0 12px;
+    }
+    .section-title h2 { margin:0; font-size:1.05rem; }
+    .section-title .dot { width:10px; height:10px; border-radius:50%; background:linear-gradient(180deg,var(--accent1),var(--accent2)); box-shadow:0 6px 20px rgba(0,255,255,0.06); }
+
+    .about-text {
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+      padding:14px;
+      border-radius:10px;
+      color:var(--muted);
+    }
+
+    .mission {
+      margin-top:12px;
+      padding:12px;
+      border-radius:10px;
+      background:linear-gradient(90deg, rgba(255,0,255,0.03), rgba(0,255,255,0.02));
+      color:var(--muted);
+      font-weight:600;
+    }
+
+    /* team grid */
+    .team {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+      gap:12px;
+      margin-top:14px;
+    }
+    .teammate{
+      background: rgba(255,255,255,0.02);
+      padding:10px;
+      border-radius:10px;
+      text-align:center;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .teammate img{
+      width:72px; height:72px; object-fit:cover; border-radius:10px; display:block; margin:0 auto 8px;
+      box-shadow:0 8px 20px rgba(0,0,0,0.6);
+    }
+    .teammate h4{ margin:6px 0 0; font-size:.95rem; }
+    .teammate p{ margin:4px 0 0; font-size:.78rem; color:var(--muted) }
+
+    .links {
+      margin-top:16px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .links a{ text-decoration:none; color:#111; font-weight:700; padding:8px 12px; border-radius:999px; background:linear-gradient(90deg,var(--accent1),var(--accent2)); box-shadow:0 8px 24px rgba(0,255,255,0.04); }
+
+    /* Right column */
+    .side {
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    .quick {
+      padding:16px;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .quick h3{ margin:0 0 8px; font-size:1rem; }
+    .meta {
+      display:flex;
+      gap:8px;
+      flex-direction:column;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .meta div { display:flex; justify-content:space-between; }
+    .meta small { color:rgba(255,255,255,0.6) }
+
+    .contact {
+      margin-top:8px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .contact a { color:var(--muted); text-decoration:none; border-radius:8px; padding:8px 10px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.01); }
+
+    .back {
+      margin-top:14px;
+      display:flex;
+      gap:8px;
+    }
+    .btn {
+      padding:10px 14px;
+      border-radius:999px;
+      border:none;
+      cursor:pointer;
+      font-weight:700;
+      color:#0b0b0b;
+      background:linear-gradient(90deg,var(--accent1),var(--accent2));
+    }
+
+    footer{ grid-column:1/-1; text-align:center; margin-top:8px; color:rgba(255,255,255,0.6); font-size:.85rem; }
+
+    @media (max-width:920px){
+      .shell{ grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell" role="main">
+    <!-- MAIN -->
+    <section class="card">
+      <div class="brand">
+        <div class="logo">H</div>
+        <div>
+          <h1>Huntrix</h1>
+          <p>Neon noir. K-pop demon hunters. Game prototype & world-building.</p>
+        </div>
+      </div>
+
+      <p class="lede">Huntrix is a short, cinematic playground where music, choreography and supernatural drama collide. It’s built as a student project but designed with heart — because stories need voice, and this one wanted a killer chorus.</p>
+
+      <div class="section-title"><div class="dot"></div><h2>Our mission</h2></div>
+      <div class="about-text">
+        We craft small games that feel big. Huntrix exists to give players a moment — a beat, a duel, a short scene that lingers. We focus on mood, music, and character-first design: make players care, then make them dance.
+      </div>
+      <div class="mission">Made by Khudee. Fueled by playlists, passion , Original movie "K-Pop Demon Hunters" and late-night debugging. No demons were harmed in the making of this demo (only egos).</div>
+
+      <div class="section-title" style="margin-top:20px"><div class="dot"></div><h2>The Team</h2></div>
+      <div class="team" aria-live="polite">
+        <div class="teammate">
+          <img src="images/rumi.jpg" alt="Rumi — Lead">
+          <h4>Rumi</h4>
+          <p>Creative lead • Voice & lore</p>
+        </div>
+        <div class="teammate">
+          <img src="images/mira.jpg" alt="Mira — Choreo">
+          <h4>Mira</h4>
+          <p>Choreography • Style</p>
+        </div>
+        <div class="teammate">
+          <img src="images/zoey.jpg" alt="Zoey — Sound">
+          <h4>Zoey</h4>
+          <p>Sound & atmosphere</p>
+        </div>
+        <div class="teammate">
+          <img src="images/IMG-20250224-WA0097.jpg" alt="You?">
+          <h4>Khudee</h4>
+          <p>Code • Fullstack vibes</p>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:18px"><div class="dot"></div><h2>Lore snippet</h2></div>
+      <div class="about-text">
+        In a city where neon hides the old rituals, a troupe fights impossible things (Demons) with choreography and song. They aren’t heroes — they’re survivors with a beat. Rumi leads. Mira rehearses fate into a routine. Zoey writes lines that sting like copper. You? You press start.
+      </div>
+    </section>
+
+    <!-- SIDE -->
+    <aside class="side">
+      <div class="quick card">
+        <h3>Quick Info</h3>
+        <div class="meta">
+          <div><small>Project</small><span>Huntrix Demo</span></div>
+          <div><small>Tech</small><span>HTML • CSS • JS</span></div>
+          <div><small>Version</small><span>Alpha</span></div>
+        </div>
+
+        <div style="margin-top:12px">
+          <div class="contact">
+            <a href="mailto:you@example.com">Email</a>
+            <a href="#" onclick="alert('Social links placeholder');return false;">Twitter</a>
+            <a href="#" onclick="alert('Social links placeholder');return false;">Instagram</a>
+          </div>
+        </div>
+
+        <div class="back">
+          <button class="btn" id="toHome">Home</button>
+          <button class="btn" id="toSongs" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.06)">Songs</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Credits</h3>
+        <p style="color:var(--muted); font-size:.95rem; margin:8px 0 0;">
+          Built by the Huntrix collective. Fonts: Poppins. Icons: your brain. Music: local files (respect copyright).
+        </p>
+        <div style="margin-top:10px">
+          <small style="color:rgba(255,255,255,0.6)">License</small>
+          <div style="color:var(--muted); margin-top:6px">Personal / student demo — ask before distributing commercial copies.</div>
+        </div>
+      </div>
+    </aside>
+
+    <footer>Made with neon & stubborn optimism — © Huntrix</footer>
+  </main>
+
+  <script>
+    // tiny navigation & niceties
+    document.getElementById('toHome').addEventListener('click', () => window.location.href = 'home.html');
+    document.getElementById('toSongs').addEventListener('click', () => window.location.href = 'songs.html');
+
+    // Accessibility: keyboard focus ring for quick nav links
+    document.querySelectorAll('a, button').forEach(el => {
+      el.addEventListener('focus', () => el.style.outline = '3px solid rgba(255,0,255,0.12)');
+      el.addEventListener('blur', () => el.style.outline = 'none');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "name": "Rumi",
+    "image": "./images/K-Pop demon hunters Rumi.jpg",
+    "description": "Fearless leader with sharp instincts, half demon and killer voice.",
+      "stats": { "hp": 2000, "atk": 500, "spd": 500 }
+
+
+  },
+  {
+    "id": 2,
+    "name": "Mira",
+    "image": "./images/mira.jpg",
+    "description": "Cool, idgaf attitude, lead choreographer, loud fashion — deadly and fabulous.",
+      "stats": { "hp": 1500, "atk": 1000, "spd": 500 }
+
+  },
+  {
+    "id": 3,
+    "name": "Zoey",
+    "image": "./images/zoey.jpg",
+    "description": "Cat gf, lyricist — sly, playful, and dangerous when she wants to be.",
+      "stats": { "hp": 1000, "atk": 500, "spd": 100 }
+
+  }
+]

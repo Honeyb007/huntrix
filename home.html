@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huntrix official game website</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
+    <header>
+        <a href="#" class="name">HUNTRIX</a>
+        <div class="nav">
+            <div class="nav-items" id="navItems">
+                <a href="">Home</a>
+                <a href="character.html" target="_blank">Characters</a>
+                <a href="Gallery.html" target="_blank">Gallery</a>
+                <a href="songs.html">Songs</a>
+                <a href="about.html">About</a>
+                <button> Download</button>
+            </div>        
+        </div>
+        <i class="fa fa-bars ham" id="openMenu"></i>
+        <i class="fa fa-times " id="closeMenu"></i>
+    </header>
+
+    <section class="home">
+        <audio id="bg-music" autoplay loop>
+        <source src="./images/How_It’s_Done(128k).m4a" type="audio/mpeg">
+    </audio>
+        <div class="home-container">
+                <img src="./images/K-Pop demon hunters Rumi.jpg " alt="Huntrix Game Image">
+            </div>
+        <div class="home-content">
+            <h1>HUNTRIX</h1>
+            <p>We are <span>HUNTERS</span>, Voices strong,
+            Slaying Demons with our songs.
+            Fix the world and make it right. <br>
+            Darkness finally meets the light.</p>
+            <a href="login.html" class="btn1">Play Now</a>
+            <a href="register.html" class="btn2"> Create Account</a>
+            </div>
+            <div class="socials">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+
+    </section>
+
+    <script>
+        const openMenu = document.getElementById('openMenu');
+const closeMenu = document.getElementById('closeMenu');
+const navItems = document.querySelector('.nav-items');
+
+// Show menu
+openMenu.addEventListener('click', () => {
+  navItems.classList.add('active');
+  openMenu.style.display = 'none';
+  closeMenu.style.display = 'block';
+});
+
+// Hide menu
+closeMenu.addEventListener('click', () => {
+  navItems.classList.remove('active');
+  closeMenu.style.display = 'none';
+  openMenu.style.display = 'block';
+});
+
+// Optional: Close if nav item is clicked
+navItems.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+    navItems.classList.remove('active');
+    closeMenu.style.display = 'none';
+    openMenu.style.display = 'block';
+  }
+});
+    </script>
+
+<footer>
+    <p>&copy; 2025 Huntrix. All rights reserved.</p>
+    <p>Follow us on social media for the latest updates!</p>
+    <div class="footer-socials">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+</footer>
+</body>
+</html>

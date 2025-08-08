@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Character</title>
+</head>
+<style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            height: 80vh;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        h1 {
+            margin-top: 30px;
+            font-size: 2.5rem;
+            text-shadow: 0 0 15px #ff00ff;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        #character-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 50px;
+            padding: 30px;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .character-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid transparent;
+            border-radius: 15px;
+            padding: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            width: 250px;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .character-card img {
+            border-radius: 10px;
+            width: 100%;
+            height: auto;
+        }
+
+        .character-card h3 {
+            margin-top: 10px;
+            font-size: 1.2rem;
+        }
+
+        .character-card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 0 20px #ff00ff;
+            border-color: #ff00ff;
+        }
+
+        .character-card.selected {
+            border-color: #00ffff;
+            box-shadow: 0 0 25px #00ffff;
+        }
+
+        #confirm-btn {
+            margin-top: 25px;
+            padding: 12px 25px;
+            font-size: 18px;
+            font-weight: bold;
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            animation: fadeIn 2.5s ease-in-out;
+        }
+
+        #confirm-btn:disabled {
+            background: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        #confirm-btn:hover:not(:disabled) {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px #00ffff;
+        }
+    </style>
+<body>
+    
+    <audio id="bg-music" autoplay loop>
+        <source src="./images/TAKEDOWN__JEONGYEON,_JIHYO,_CHAEYOUNG_(128k).m4a" type="audio/mpeg">
+    </audio>
+    <h1>Choose Your Character</h1>
+    <div id="character-container"></div>
+    <button id="confirm-btn" disabled>Confirm Selection</button>
+
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("character-container");
+  const confirmBtn = document.getElementById("confirm-btn");
+  let selectedCharacter = null;
+  let charactersList = [];
+
+  // Helpers to get current username in a tolerant way
+  function getCurrentUserString() {
+    const keys = ["currentUser", "loggedInUser", "username"];
+    for (const k of keys) {
+      const raw = localStorage.getItem(k);
+      if (!raw) continue;
+      try {
+        const parsed = JSON.parse(raw);
+        if (parsed && typeof parsed === "object") return parsed.username || parsed.name || String(parsed);
+        return String(parsed);
+      } catch (e) {
+        return String(raw);
+      }
+    }
+    return null;
+  }
+
+  function getUsersMap() {
+    try { return JSON.parse(localStorage.getItem("users") || "{}"); } 
+    catch(e) { return {}; }
+  }
+
+  function saveUsersMap(users) {
+    try { localStorage.setItem("users", JSON.stringify(users)); } catch(e) { console.warn("Could not save users map", e); }
+  }
+
+  // Try to find an already-selected character from localStorage (top-level or users map)
+  function detectExistingSelection() {
+    // 1) top-level selectedCharacter
+    try {
+      const sc = JSON.parse(localStorage.getItem("selectedCharacter") || "null");
+      if (sc) return sc;
+    } catch(e) {}
+
+    // 2) users[currentUser].character
+    const users = getUsersMap();
+    const username = getCurrentUserString();
+    if (username && users && users[username] && users[username].character) {
+      return users[username].character;
+    }
+
+    return null;
+  }
+
+  // Render character cards
+  async function loadCharacters() {
+    try {
+      const res = await fetch("characters.json", { cache: "no-store" });
+      charactersList = await res.json();
+    } catch (err) {
+      console.error("Error loading characters.json", err);
+      container.innerHTML = "<p style='color:#faa'>Couldn't load characters. Check path & server.</p>";
+      return;
+    }
+
+    const existing = detectExistingSelection();
+
+    charactersList.forEach((character, index) => {
+      const charDiv = document.createElement("div");
+      charDiv.classList.add("character-card");
+      // stagger animation if you want
+      charDiv.style.animationDelay = `${index * 0.08}s`;
+
+      // use encodeURI for file paths with spaces/apostrophes
+      const safeImg = character.image ? encodeURI(character.image) : "";
+
+      charDiv.innerHTML = `
+        <img src="${safeImg}" alt="${character.name}" width="150">
+        <h3>${character.name}</h3>
+        <p style="font-size:.85rem;color:rgba(255,255,255,0.75);margin-top:6px;">${character.description || ''}</p>
+      `;
+
+      // click handler
+      charDiv.addEventListener("click", () => {
+        document.querySelectorAll(".character-card").forEach(c => c.classList.remove("selected"));
+        charDiv.classList.add("selected");
+        selectedCharacter = character;
+        confirmBtn.disabled = false;
+      });
+
+      // append before checking selection so we can mark it
+      container.appendChild(charDiv);
+
+      // if existing selection matches this character, auto-select it
+      if (existing) {
+        // existing might be object, id or name
+        const matches =
+          (typeof existing === "object" && (existing.id == character.id || existing.name == character.name)) ||
+          (String(existing) === String(character.id)) ||
+          (String(existing) === String(character.name));
+        if (matches && !selectedCharacter) {
+          // simulate a click to apply class + set selectedCharacter + enable button
+          charDiv.classList.add("selected");
+          selectedCharacter = character;
+          confirmBtn.disabled = false;
+        }
+      }
+    });
+
+    // If no characters found, show friendly message
+    if (!charactersList.length) {
+      container.innerHTML = "<p style='color:#faa'>No characters found in characters.json</p>";
+    }
+  }
+
+  // Confirm selection: save top-level AND to users map (if user exists)
+  confirmBtn.addEventListener("click", () => {
+    if (!selectedCharacter) return;
+
+    // Save top-level (object)
+    try {
+      localStorage.setItem("selectedCharacter", JSON.stringify(selectedCharacter));
+    } catch (e) { console.warn("Could not save selectedCharacter", e); }
+
+    // Also update users map under currentUser (id or name stored)
+    const username = getCurrentUserString();
+    if (username) {
+      const users = getUsersMap();
+      users[username] = users[username] || {};
+      // store a lightweight reference (id or name) to be flexible for other code
+      users[username].character = selectedCharacter.id ?? selectedCharacter.name ?? selectedCharacter;
+      saveUsersMap(users);
+    }
+
+    // small UX
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = "Saved — redirecting...";
+
+    // redirect
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 350);
+  });
+
+  // Initial load
+  loadCharacters();
+});
+</script>
+</body>
+</html>

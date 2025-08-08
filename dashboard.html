@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Huntrix — Dashboard</title>
+<style>
+    /* === Copied/Matched character-select style (so both pages look the same) === */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+        height: 80vh;
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+        color: #fff;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        animation: fadeIn 1s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .wrap {
+        width: min(950px, 96%);
+        margin: 24px auto;
+        padding: 28px;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.02);
+        box-shadow: 0 6px 30px rgba(0,0,0,0.6);
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 28px;
+        align-items: start;
+        animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Left panel: player card */
+    .player-card {
+        background: rgba(255,255,255,0.03);
+        border-radius: 14px;
+        padding: 20px;
+        text-align: center;
+        border: 2px solid transparent;
+        transition: box-shadow .3s, border-color .3s;
+    }
+
+    .player-card .avatar {
+        width: 100%;
+        border-radius: 12px;
+        max-width: 320px;
+        height: auto;
+        display: block;
+        margin: 0 auto;
+        box-shadow: 0 0 20px rgba(0,0,0,0.6);
+    }
+
+    .player-card h2 {
+        margin: 14px 0 4px;
+        font-size: 1.6rem;
+        text-shadow: 0 0 10px rgba(255,0,255,0.08);
+    }
+
+    .player-card p.desc {
+        font-size: 0.95rem;
+        color: rgba(255,255,255,0.85);
+        margin: 8px 0 12px;
+    }
+
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .stat {
+        flex: 1;
+        background: rgba(255,255,255,0.03);
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.03);
+    }
+
+    .stat h4 { margin: 0; font-size: 0.9rem; }
+    .stat p { margin: 6px 0 0; font-weight: bold; }
+
+    /* Right panel: welcome + actions */
+    .main-panel {
+        padding: 10px 6px;
+    }
+
+    .title {
+        margin-top: 6px;
+        text-align: left;
+    }
+
+    .title h1 {
+        font-size: 2rem;
+        margin: 0 0 8px;
+        text-shadow: 0 0 15px #ff00ff;
+    }
+
+    .title p.sub {
+        margin: 0;
+        color: rgba(255,255,255,0.8);
+    }
+
+    .actions {
+        margin-top: 28px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .actions button {
+        padding: 12px 22px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+        background: linear-gradient(90deg, #ff00ff, #00ffff);
+        color: white;
+        transition: transform .2s, box-shadow .2s;
+    }
+
+    .actions button:disabled {
+        background: #444;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
+    .actions button:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0,255,255,0.08);
+    }
+
+    .change-link {
+        display: inline-block;
+        margin-top: 14px;
+        color: #fff;
+        opacity: .85;
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    /* responsive */
+    @media (max-width: 840px) {
+        .wrap { grid-template-columns: 1fr; }
+        body { height: auto; padding: 32px 0; }
+    }
+</style>
+</head>
+<body>
+  <audio id="bg-music" autoplay loop>
+        <source src="./images/Golden(128k).m4a" type="audio/mpeg">
+  </audio>
+  <div class="wrap" role="main">
+    <section class="player-card" id="playerCard">
+      <img id="char-img" class="avatar" src="images/default.png" alt="Selected Character">
+      <h2 id="char-name">No character selected</h2>
+      <p class="desc" id="char-desc">Pick a champion and come back to see them here.</p>
+
+      <div class="stat-row" id="char-stats" style="display:none;">
+        <div class="stat">
+          <h4>HP</h4>
+          <p id="hp">—</p>
+        </div>
+        <div class="stat">
+          <h4>ATK</h4>
+          <p id="atk">—</p>
+        </div>
+        <div class="stat">
+          <h4>SPD</h4>
+          <p id="spd">—</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="main-panel">
+      <div class="title">
+        <h1 id="welcome-msg">Loading...</h1>
+        <p class="sub" id="sub-msg">Your dashboard — same vibes as selection.</p>
+      </div>
+
+      <div class="actions">
+        <button id="galleryBtn">View Gallery</button>
+        <button id="profileBtn">View Profile</button>
+        <button id="changeBtn">Choose / Change Character</button>
+        <button id="logoutBtn">Logout</button>
+        <button id="homeBtn">Home</button>
+      </div>
+
+      <div style="margin-top:18px;">
+        <span class="change-link" id="goto-select">Open Character Selection</span>
+      </div>
+    </section>
+  </div>
+
+<script>
+/*
+ Dashboard loading logic:
+ - Looks for selectedCharacter in localStorage (JSON)
+ - If not found, looks for users[currentUser] -> .character
+ - Fetches characters.json and matches by id/name
+ - Shows welcome message, image, desc and stats (if in JSON)
+*/
+
+async function loadDashboard() {
+    // tolerant retrieval of current user
+    const currentUserKeyCandidates = ["currentUser","loggedInUser","username"];
+    let currentUserKey = null;
+    for (let k of currentUserKeyCandidates) {
+        if (localStorage.getItem(k)) { currentUserKey = k; break; }
+    }
+
+    // users object (optional)
+    const users = JSON.parse(localStorage.getItem("users") || "null");
+
+    // get username string (could be stored as plain or object)
+    let username = null;
+    if (currentUserKey) {
+        const raw = localStorage.getItem(currentUserKey);
+        try {
+            const parsed = JSON.parse(raw);
+            // If the stored value is an object like { username: 'x', name:'y' } else it's just a string
+            if (parsed && typeof parsed === "object") {
+                username = parsed.username || parsed.name || parsed.user || null;
+            } else {
+                username = parsed;
+            }
+        } catch(e) {
+            username = raw;
+        }
+    }
+
+    // fallback when users[currentUserString] exists
+    if (!username && users) {
+        // try to find a single user saved as { users: { '<name>': {...} } }
+        const keys = Object.keys(users || {});
+        if (keys.length === 1) {
+            const u = users[keys[0]];
+            username = u.username || u.name || keys[0];
+        }
+    }
+
+    // load selectedCharacter from multiple posible places
+    let selectedCharacter = null;
+    try {
+        selectedCharacter = JSON.parse(localStorage.getItem("selectedCharacter") || "null");
+    } catch(e){ selectedCharacter = null; }
+
+    // also check users[currentUser].character (if users exists and currentUserKey is string)
+    if (!selectedCharacter && users && currentUserKey) {
+        let currentKeyValue = localStorage.getItem(currentUserKey);
+        let userKeyName = null;
+        try {
+            const parsed = JSON.parse(currentKeyValue);
+            userKeyName = (typeof parsed === "string") ? parsed : (parsed.username || parsed.name || null);
+        } catch(e) {
+            userKeyName = currentKeyValue;
+        }
+        if (userKeyName && users[userKeyName]) {
+            // user stored under users[userKeyName]
+            const u = users[userKeyName];
+            if (u.character) selectedCharacter = u.character; // may be string or object
+        }
+    }
+
+    // fetch characters.json and find the matching object
+    let characters = [];
+    try {
+        const res = await fetch("characters.json", {cache: "no-store"});
+        characters = await res.json();
+    } catch (err) {
+        console.warn("Couldn't load characters.json:", err);
+    }
+
+    // If selectedCharacter is a simple string/name, try to find object
+    let charObj = null;
+    if (selectedCharacter) {
+        if (typeof selectedCharacter === "string") {
+            charObj = characters.find(c => c.name === selectedCharacter || c.id == selectedCharacter);
+        } else if (typeof selectedCharacter === "object") {
+            // if stored whole object
+            if (selectedCharacter.name) {
+                charObj = characters.find(c => c.name === selectedCharacter.name) || selectedCharacter;
+            } else if (selectedCharacter.id) {
+                charObj = characters.find(c => c.id == selectedCharacter.id) || selectedCharacter;
+            } else {
+                charObj = selectedCharacter;
+            }
+        }
+    }
+
+    // UI elements
+    const welcomeEl = document.getElementById("welcome-msg");
+    const charImg = document.getElementById("char-img");
+    const charName = document.getElementById("char-name");
+    const charDesc = document.getElementById("char-desc");
+    const statRow = document.getElementById("char-stats");
+
+    // Set welcome
+    if (username) {
+        welcomeEl.textContent = `Welcome back, ${username}!`;
+    } else {
+        welcomeEl.textContent = `Welcome to Huntrix`;
+    }
+
+    // If we found a character object, show it
+    if (charObj) {
+        // support image paths either relative or absolute
+        if (charObj.image) charImg.src = charObj.image;
+        charName.textContent = charObj.name || "Unnamed Champion";
+        charDesc.textContent = charObj.description || "No description available.";
+
+        // show stats if present
+        if (charObj.stats) {
+            statRow.style.display = "flex";
+            document.getElementById("hp").textContent = charObj.stats.hp ?? "—";
+            document.getElementById("atk").textContent = charObj.stats.atk ?? "—";
+            document.getElementById("spd").textContent = charObj.stats.spd ?? "—";
+        } else {
+            statRow.style.display = "none";
+        }
+    } else {
+        // no selected char
+        charImg.src = "images/default.png";
+        charName.textContent = "No character selected";
+        charDesc.textContent = "Click 'Choose / Change Character' to pick your champion.";
+        statRow.style.display = "none";
+    }
+}
+
+// wire up buttons
+document.getElementById("galleryBtn").addEventListener("click", () => {
+    // require character before starting
+    const selectedCharacter = localStorage.getItem("selectedCharacter");
+    if (!selectedCharacter) {
+        alert("Please choose a character first!");
+        window.location.href = "character-selection.html";
+        return;
+    }
+    // go to the gallery
+    window.location.href = "Gallery.html";
+});
+
+document.getElementById("profileBtn").addEventListener("click", () => {
+    alert("Profile coming soon. Focus on the grind.");
+});
+
+document.getElementById("changeBtn").addEventListener("click", () => {
+    window.location.href = "character-select.html";
+});
+document.getElementById("homeBtn").addEventListener("click", () => {
+    window.location.href = "home.html"; // or wherever your home page is
+});
+
+
+document.getElementById("logoutBtn").addEventListener("click", () => {
+    // remove common login markers but don't wipe everything
+    localStorage.removeItem("currentUser");
+    localStorage.removeItem("loggedInUser");
+    // optional: do not remove users list to keep accounts
+    window.location.href = "login.html";
+});
+
+document.getElementById("goto-select").addEventListener("click", () => {
+    window.location.href = "character-select.html";
+});
+
+window.addEventListener("load", loadDashboard);
+</script>
+</body>
+</html>

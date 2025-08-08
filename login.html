@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
+</head>
+<header>
+    <a href="#" class="name">HUNTRIX</a>
+    <div class="menu-btn"></div>
+    <div class="nav">
+        <div class="nav-items">
+            <a href="#">Home</a>
+            <a href="character.html" target="_blank">Characters</a>
+            <a href="Gallery.html" target="_blank">Gallery</a>
+            <a href="#">Songs</a>
+            <a href="about.html">About</a>
+            <button> Download</button>
+        </div>
+    </div>
+</header>
+<body class="bg">
+    <div class="wrapper">
+     <form action="">
+        <h1>Login</h1>
+        <div class="input-box">
+            <input type="text" placeholder="Username" required>
+            <i class='bx  bxs-user'  ></i> 
+        </div>
+        <div class="input-box">
+            <input type="password" placeholder="password" required>
+            <i class='bx  bxs-lock'  ></i> 
+        </div>
+        <div class="rem-forgot">
+            <label> <input type="checkbox">Remember Me </label>
+            <a href="#">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+        <div class="reglink">
+            <p>Don't have an account? <a href="register.html">Register here!</a></p>
+
+        </div>
+    </form>
+    </div>
+    <script>
+        console.log("Login script loaded ✅");
+
+function hasSelectedCharacter() {
+  // 1) explicit top-level selectedCharacter
+  try {
+    const sc = JSON.parse(localStorage.getItem("selectedCharacter") || "null");
+    if (sc) return true;
+  } catch (e) { /* ignore parse errors */ }
+
+  // 2) try direct user object returned on login (data.user.character)
+  try {
+    const rawLogged = localStorage.getItem("loggedInUser");
+    if (rawLogged) {
+      const parsed = JSON.parse(rawLogged);
+      if (parsed && (parsed.character || parsed.selectedCharacter)) return true;
+    }
+  } catch(e){}
+
+  // 3) users map: users[username].character
+  try {
+    const users = JSON.parse(localStorage.getItem("users") || "null");
+    if (users) {
+      const keyCandidates = ["currentUser","loggedInUser","username"];
+      for (const k of keyCandidates) {
+        const raw = localStorage.getItem(k);
+        if (!raw) continue;
+        let uname = raw;
+        try { const parsed = JSON.parse(raw); uname = parsed?.username || parsed?.name || parsed; } catch(_) { uname = raw; }
+        if (users[uname] && users[uname].character) return true;
+      }
+      // if there's exactly one user and they have character
+      const keys = Object.keys(users);
+      if (keys.length === 1 && users[keys[0]].character) return true;
+    }
+  } catch(e) { /* ignore parse errors */ }
+
+  // nothing found
+  return false;
+}
+
+document.querySelector("form").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const form = e.target;
+  const username = form.elements[0].value.trim();
+  const password = form.elements[1].value;
+
+  if (!username || !password) {
+    alert("Please enter username and password.");
+    return;
+  }
+
+  // disable UI to prevent double submits
+  const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('button');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Logging in..."; }
+
+  try {
+    const response = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json().catch(()=>({}));
+
+    if (!response.ok) {
+      alert(data.message || "Login failed — check credentials or server.");
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Login"; }
+      return;
+    }
+
+    // server returned success + user object
+    const user = data.user || { username };
+
+    // Save a few compatible localStorage keys so other parts of your app find the user
+    // Save the whole user object (for info like user.character)...
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+    // ...and also save a simple currentUser key (string or simple JSON) for compatibility
+    const simpleName = user.username || user.name || username;
+    // store as a JSON string to be tolerant with your earlier code
+    localStorage.setItem("currentUser", JSON.stringify(simpleName));
+
+    // Update / merge users map so dashboard/users-based checks work
+    try {
+      const users = JSON.parse(localStorage.getItem("users") || "{}");
+      users[simpleName] = Object.assign({}, users[simpleName] || {}, user);
+      // if server returned character info, ensure users map captures it (id or name)
+      if (user.character) users[simpleName].character = user.character;
+      localStorage.setItem("users", JSON.stringify(users));
+    } catch (err) {
+      console.warn("Failed to update local users map:", err);
+    }
+
+    // If server returned a character in the user object, mirror it to top-level selectedCharacter
+    if (user.character) {
+      // If character is an object or id/name, store as-is
+      localStorage.setItem("selectedCharacter", JSON.stringify(user.character));
+    }
+
+    // Decide where to go next: skip selection if they already chose a character
+    if (hasSelectedCharacter()) {
+      window.location.href = "dashboard.html";
+    } else {
+      window.location.href = "character-select.html"; // your existing selection page
+    }
+  } catch (err) {
+    console.error("Login error:", err);
+    alert("Could not contact server. Is your dev server running on localhost:3000?");
+    if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Login"; }
+  }
+});
+    </script>
+</body>
+</html>

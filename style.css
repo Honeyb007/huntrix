@@ -116,32 +116,52 @@ section{
 .home .home-content p{
     margin-bottom: 70px;
 }
-.home .home-content .btn1 {
-    background-color:#fff;
-    color: #1680ac;
-    padding: 20px 40px;
+/* Wrap container styling */
+.home .home-content .btn-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Button base styling */
+.home .home-content .btn1,
+.home .home-content .btn2 {
+    padding: 15px 30px;
     border-radius: 30px;
     font-size: 1.1em;
     font-weight: 600;
     text-decoration: none;
+    text-align: center;
+    min-width: 150px;
 }
-.home .home-content .btn1:hover{
+
+/* Colors */
+.home .home-content .btn1 {
+    background-color: #fff;
+    color: #1680ac;
+}
+.home .home-content .btn1:hover {
     background-color: pink;
     color: #fff;
 }
+
 .home .home-content .btn2 {
     background-color: pink;
     color: #1680ac;
-    padding: 20px 40px;
-    border-radius: 30px;
-    font-size: 1.1em;
-    font-weight: 600;
-    text-decoration: none;
-    margin-left: 20px;
 }
-.home .home-content .btn2:hover{
+.home .home-content .btn2:hover {
     background-color: #fff;
     color: pink;
+}
+
+/* Small screen adjustments */
+@media (max-width: 600px) {
+    .home .home-content .btn1,
+    .home .home-content .btn2 {
+        width: 100%;
+    }
 }
 
 .home .socials{

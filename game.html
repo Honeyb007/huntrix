@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huntrix — Cave of Choices</title>
+  <link rel="stylesheet" href="game.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="sidebar">
+    <div class="player">
+      <img id="hud-img" src="images/default.png" alt="Character" />
+        <h2 id="hud-name">Loading...</h2>
+      <div id="stats">
+        <div>HP</div>
+        <div class="bar"><div id="hp-bar" class="hp-fill"></div></div>
+        <div>Energy</div>
+        <div class="bar"><div id="energy-bar" class="energy-fill"></div></div>
+      </div>
+    </div>
+    <div class="music-panel">
+      <h3>Now Playing</h3>
+      <p id="music-title">None</p>
+    </div>
+  </div>
+
+  <div class="content" id="game-area">
+    <div id="story"></div>
+    <div id="choices"></div>
+  </div>
+  
+    
+
+
+  <script src="game.js"></script>
+</body>
+</html>

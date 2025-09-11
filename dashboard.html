@@ -147,6 +147,22 @@
         text-decoration: underline;
         cursor: pointer;
     }
+    #gameBtn {
+        margin-top: 50px;
+        padding: 15px 70px;
+        border-radius: 30px;
+        border: none;
+        cursor: pointer;
+        font-weight: 900;
+        background: linear-gradient(90deg, #ff00ff, #00ffff);
+        color: white;
+        transition: transform .2s, box-shadow .2s;
+    }
+    #gameBtn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 30px rgba(0,255,255,0.08);
+    }
+
 
     /* responsive */
     @media (max-width: 840px) {
@@ -198,6 +214,7 @@
       <div style="margin-top:18px;">
         <span class="change-link" id="goto-select">Open Character Selection</span>
       </div>
+      <div><button id="gameBtn">Play Game</button></div>
     </section>
   </div>
 
@@ -350,7 +367,7 @@ document.getElementById("galleryBtn").addEventListener("click", () => {
 });
 
 document.getElementById("profileBtn").addEventListener("click", () => {
-    alert("Profile coming soon. Focus on the grind.");
+    window.location.href = "profile.html";
 });
 
 document.getElementById("changeBtn").addEventListener("click", () => {
@@ -358,6 +375,17 @@ document.getElementById("changeBtn").addEventListener("click", () => {
 });
 document.getElementById("homeBtn").addEventListener("click", () => {
     window.location.href = "index.html"; // or wherever your home page is
+});
+document.getElementById("gameBtn").addEventListener("click", () => {
+    // require character before starting
+    const selectedCharacter = localStorage.getItem("selectedCharacter");
+    if (!selectedCharacter) {
+        alert("Please choose a character first!");
+        window.location.href = "character-selection.html";
+        return;
+    }
+    // go to the game page
+    window.location.href = "game.html"; // replace with your actual game page
 });
 
 

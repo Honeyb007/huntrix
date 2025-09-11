@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huntrix — Profile</title>
+  <link rel="stylesheet" href="profile.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+
+    body {
+  margin: 0;
+  font-family: 'Orbitron', sans-serif;
+  background-color: #0a0a0f;
+  color: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.profile-container {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid #ff3e80;
+  border-radius: 15px;
+  padding: 30px;
+  width: 400px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(255, 62, 128, 0.8), 0 0 45px rgba(122, 0, 255, 0.6);
+}
+
+.player-info img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #00f0ff;
+  margin-bottom: 10px;
+}
+
+.stats, .progress, .replays {
+  margin: 20px 0;
+}
+
+#endings-list li {
+  margin: 5px 0;
+  color: #39f3ff;
+}
+
+.actions button {
+  background: linear-gradient(135deg, #ff3e80, #7a00ff);
+  border: none;
+  color: #fff;
+  padding: 10px 15px;
+  margin: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.25s, box-shadow 0.3s;
+}
+
+.actions button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(122, 0, 255, 1), 0 0 30px rgba(255, 62, 128, 0.8);
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <h1>Hunter Profile</h1>
+
+    <div class="player-info">
+      <img id="player-avatar" src="images/default.png" alt="Avatar">
+      <h2 id="player-name">Huntrix</h2>
+    </div>
+
+    <div class="stats">
+      <p><strong>HP:</strong> <span id="hp"></span></p>
+      <p><strong>Energy:</strong> <span id="energy"></span></p>
+    </div>
+
+    <div class="progress">
+      <h3>Endings Unlocked</h3>
+      <ul id="endings-list"></ul>
+    </div>
+
+    <div class="replays">
+      <p><strong>Replays:</strong> <span id="replays">0</span></p>
+    </div>
+
+    <div class="actions">
+      <button onclick="window.location.href='dashboard.html'">⬅ Back to Dashboard</button>
+      <button onclick="window.location.href='game.html'">▶ Play Again</button>
+    </div>
+  </div>
+
+  <script>
+const selected = JSON.parse(localStorage.getItem("selectedCharacter") || "null");
+
+let profileData = JSON.parse(localStorage.getItem("huntrix_profile")) || {
+  endings: [],
+  replays: 0,
+  lastHP: 100,
+  lastEnergy: 100
+};
+
+// Render character info
+if (selected) {
+  document.getElementById("player-name").textContent = selected.name || "Huntrix";
+  document.getElementById("player-avatar").src = selected.image || "images/default.png";
+} else {
+  document.getElementById("player-name").textContent = "Huntrix";
+  document.getElementById("player-avatar").src = "images/default.png";
+}
+
+// Render stats
+document.getElementById("hp").textContent = profileData.lastHP;
+document.getElementById("energy").textContent = profileData.lastEnergy;
+document.getElementById("replays").textContent = profileData.replays;
+
+// Render endings
+const endingsList = document.getElementById("endings-list");
+if (profileData.endings.length === 0) {
+  endingsList.innerHTML = "<li>No endings unlocked yet.</li>";
+} else {
+  profileData.endings.forEach(e => {
+    const li = document.createElement("li");
+    li.textContent = formatEndingName(e);
+    li.classList.add(e); // add CSS class for color-coding
+    endingsList.appendChild(li);
+  });
+}
+
+// Utility: readable ending names
+function formatEndingName(key) {
+  switch (key) {
+    case "goodEnd": return "🌟 Good Ending";
+    case "badEnd": return "☠️ Bad Ending";
+    case "neutralEnd": return "⚖️ Neutral Ending";
+    default: return key;
+  }
+}
+  </script>
+</body>
+</html>

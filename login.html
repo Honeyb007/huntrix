@@ -104,62 +104,46 @@ document.querySelector("form").addEventListener("submit", async function (e) {
   const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('button');
   if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Logging in..."; }
 
-  try {
-    const response = await fetch("https://huntrix-backend-0a1b.onrender.com", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password })
-    });
+ try {
+  const response = await fetch("https://huntrix-backend-0a1b.onrender.com/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
 
-    const data = await response.json().catch(()=>({}));
+  const data = await response.json().catch(()=>({}));
 
-    if (!response.ok) {
-      alert(data.message || "Login failed — check credentials or server.");
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Login"; }
-      return;
-    }
-
-    // server returned success + user object
-    const user = data.user || { username };
-
-    // Save a few compatible localStorage keys so other parts of your app find the user
-    // Save the whole user object (for info like user.character)...
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-    // ...and also save a simple currentUser key (string or simple JSON) for compatibility
-    const simpleName = user.username || user.name || username;
-    // store as a JSON string to be tolerant with your earlier code
-    localStorage.setItem("currentUser", JSON.stringify(simpleName));
-
-    // Update / merge users map so dashboard/users-based checks work
-    try {
-      const users = JSON.parse(localStorage.getItem("users") || "{}");
-      users[simpleName] = Object.assign({}, users[simpleName] || {}, user);
-      // if server returned character info, ensure users map captures it (id or name)
-      if (user.character) users[simpleName].character = user.character;
-      localStorage.setItem("users", JSON.stringify(users));
-    } catch (err) {
-      console.warn("Failed to update local users map:", err);
-    }
-
-    // If server returned a character in the user object, mirror it to top-level selectedCharacter
-    if (user.character) {
-      // If character is an object or id/name, store as-is
-      localStorage.setItem("selectedCharacter", JSON.stringify(user.character));
-    }
-
-    // Decide where to go next: skip selection if they already chose a character
-    if (hasSelectedCharacter()) {
-      window.location.href = "dashboard.html";
-    } else {
-      window.location.href = "character-select.html"; // your existing selection page
-    }
-  } catch (err) {
-    console.error("Login error:", err);
-    alert("Could not contact server. Is your dev server running on localhost:3000?");
+  if (!response.ok) {
+    alert(data.message || "Login failed — check credentials or server.");
     if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Login"; }
+    return;
   }
+
+  const user = data.user || { username };
+  localStorage.setItem("loggedInUser", JSON.stringify(user));
+  localStorage.setItem("currentUser", JSON.stringify(user.username || username));
+
+  // Update users map
+  const users = JSON.parse(localStorage.getItem("users") || "{}");
+  users[user.username] = { ...(users[user.username] || {}), ...user };
+  localStorage.setItem("users", JSON.stringify(users));
+
+  if (user.character) {
+    localStorage.setItem("selectedCharacter", JSON.stringify(user.character));
+  }
+
+  if (hasSelectedCharacter()) {
+    window.location.href = "dashboard.html";
+  } else {
+    window.location.href = "character-select.html";
+  }
+} catch (err) {
+  console.error("Login error:", err);
+  alert("Could not contact server. Try again later.");
+  if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = "Login"; } 
+}
 });
     </script>
+
 </body>
 </html>

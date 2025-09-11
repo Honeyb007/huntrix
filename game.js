@@ -27,7 +27,7 @@ const scenes = {
   },
   allyEncounter: {
     text: "A fellow Hunter steps forward. Their eyes flicker with strange light.",
-    bg: "./images/huntrix.jpg",
+    bg: "./images/baby.jpg",
     music: { file: "music/mystery.mp3", title: "Mysterious Encounter" },
     changes: { energy: -10 },
     choices: [
@@ -58,7 +58,7 @@ const scenes = {
   songPath: {
     text: "Your voice merges with theirs. A hidden path opens, glowing like a stage light.",
     bg: "./images/song.jpg",
-    music: { file: "music/song.mp3", title: "Song of Hunters" },
+    music: { file: "./images/Golden(128k).m4a", title: "Golden" },
     changes: { energy: +25 },
     choices: [
       { text: "Step onto the stage", next: "finalBossGood" }
@@ -87,7 +87,7 @@ const scenes = {
   finalBossGood: {
     text: "The Demon King rises. His roar shakes the cave. Will you burn your energy to fight?",
     bg: "./images/boss.jpg",
-    music: { file: "./images/TAKEDOWN__JEONGYEON,_JIHYO,_CHAEYOUNG_(128k).m4a", title: "Boss Battle" },
+    music: { file: "./images/TAKEDOWN__JEONGYEON,_JIHYO,_CHAEYOUNG_(128k).m4a", title: "Takedown" },
     changes: { energy: -30 },
     choices: [
       { text: "Unleash your power", next: "goodEnd" },
@@ -166,7 +166,7 @@ function showScene(id) {
     // Render replay / end game buttons
     choicesContainer.innerHTML = `
       <button class="replay" onclick="incrementReplay()">🔄 Replay</button>
-      <button onclick="goDashboard()">🏠 End Game</button>
+      <button onclick="goProfile()">🏠 End Game</button>
     `;
   } else {
     choicesContainer.innerHTML = scene.choices
@@ -204,8 +204,8 @@ function incrementReplay() {
 }
 
 // --- Redirect ---
-function goDashboard() {
-  window.location.href = "dashboard.html";
+function goProfile() {
+  window.location.href = "profile.html";
 }
 
 // --- Boot Game ---

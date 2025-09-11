@@ -24,6 +24,8 @@
 
             </div>
         </div>
+        <i class="fa fa-bars ham" id="openMenu"></i>
+        <i class="fa fa-times " id="closeMenu"></i>
     </header>
 <div class="gallery">
   <div class="gallery-container">
@@ -44,6 +46,34 @@
 </div>
 </body>
 <script>
+
+ const openMenu = document.getElementById('openMenu');
+const closeMenu = document.getElementById('closeMenu');
+const navItems = document.querySelector('.nav-items');
+
+// Show menu
+openMenu.addEventListener('click', () => {
+  navItems.classList.add('active');
+  openMenu.style.display = 'none';
+  closeMenu.style.display = 'block';
+});
+
+// Hide menu
+closeMenu.addEventListener('click', () => {
+  navItems.classList.remove('active');
+  closeMenu.style.display = 'none';
+  openMenu.style.display = 'block';
+});
+
+// Optional: Close if nav item is clicked
+navItems.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+    navItems.classList.remove('active');
+    closeMenu.style.display = 'none';
+    openMenu.style.display = 'block';
+  }
+});
+
     // Intersection Observer for Gallery Items
   const galleryItems = document.querySelectorAll('.gallery-container');
 
@@ -64,6 +94,7 @@
     item.style.transition = 'all 0.8s ease-out';
     observer.observe(item);
   });
+
 
 </script>
 </html>

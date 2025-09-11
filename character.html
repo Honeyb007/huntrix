@@ -23,26 +23,30 @@
 
             </div>
             </div>
+            <i class="fa fa-bars ham" id="openMenu"></i>
+        <i class="fa fa-times " id="closeMenu"></i>
     </header>
 
-            <div class="char">
-            <div class="text">
-              <span>Main Characters</span>
+       <main class="char">
+      <div class="text">
+        <span>Main Characters</span>
               <p id="char-desc">Click a character below to learn more.</p>
-             </div>
+       </div>
 
-            <div class="char-img">
+       <div class="char-img">
              <img id="big-img" src="" alt="Character Image">
             </div>
 
              <div class="small-img" id="thumbs">
              <!-- Thumbnails will be added here -->
              </div>
-            </div>
+            </main>
+            
+            
   <script>
-           const bigImage = document.getElementById('big-img');
-           const thumbs = document.getElementById('thumbs');
-           const desc = document.getElementById('char-desc');
+   const bigImage = document.getElementById('big-img');
+   const thumbs = document.getElementById('thumbs');
+   const desc = document.getElementById('char-desc');
 
      fetch('characters.json')
     .then(res => res.json())
@@ -64,8 +68,8 @@
         thumbs.appendChild(img);
         
 
-        // Load first character by default
-        if (index === 0) {
+// Load first character by default
+    if (index === 0) {
           bigImage.src = char.image;
           desc.innerText = char.name + ": " + char.description;
         }
@@ -75,6 +79,33 @@
       console.error("Couldn't load characters 😩", error);
     });
 
+
+  const openMenu = document.getElementById('openMenu');
+const closeMenu = document.getElementById('closeMenu');
+const navItems = document.querySelector('.nav-items');
+
+// Show menu
+openMenu.addEventListener('click', () => {
+  navItems.classList.add('active');
+  openMenu.style.display = 'none';
+  closeMenu.style.display = 'block';
+});
+
+// Hide menu
+closeMenu.addEventListener('click', () => {
+  navItems.classList.remove('active');
+  closeMenu.style.display = 'none';
+  openMenu.style.display = 'block';
+});
+
+// Optional: Close if nav item is clicked
+navItems.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+    navItems.classList.remove('active');
+    closeMenu.style.display = 'none';
+    openMenu.style.display = 'block';
+  }
+});
      
  </script>
 

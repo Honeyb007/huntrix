@@ -61,12 +61,13 @@ header .nav .nav-items a:hover{
 header .nav .nav-items button {
     background-color: #fff;
     color: #1680ac;
-    padding: 10px 30px;
+    padding: 10px 20px;
     border-radius: 30px;
     font-size: 1.1em;
     font-weight: 300;
     border: none;
     text-decoration: none;
+    margin-left: 10px;
 }
 header .nav .nav-items button:hover{
     background-color: pink;
@@ -216,7 +217,7 @@ footer .footer-socials a:hover{
 }
 header .ham {
     font-size: 26px;
-    color: #fff;
+    color: pink;
     cursor: pointer;
     position: absolute;
     top: 20px;
@@ -255,7 +256,7 @@ header .ham {
         right: 20px;
     }
     }
-@media(max-width: 700px){
+@media(max-width: 600px){
     .nav-items{
         background: #2696e9;
         position: fixed;
@@ -321,48 +322,8 @@ header .ham {
      }
     
 }
-/* songs */
-body {
-  font-family: 'Poppins', sans-serif;
-  color: #fff;
-  padding: 2rem;
-  overflow-x: hidden;
-}
-.bgg{
+
     
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100vh;
-    background: linear-gradient(to bottom right, #0f0c29, #302b63, #24243e);
-}
-
-.title {
-    margin-top:60px;
-  text-align: center;
-  font-size: 2.5rem;
-  margin-bottom: 2rem;
-  color: #ff66cc;
-}
-
-.song-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.song h3 {
-  margin-bottom: 0.5rem;
-  color: #ffccee;
-}
-
-audio {
-  width: 100%;
-  outline: none;
-}
-     
 /* acct and login */
 
 
@@ -375,7 +336,7 @@ body{
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url(./images/huntrix\ from\ k-pop\ demon\ hunters\ ☺️.jpg);    
+    background-image: url(./images/huntrix\ from\ k-pop\ demon\ hunters\.jpg);    
 }
 
 .wrapper{

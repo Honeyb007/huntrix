@@ -5,50 +5,128 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Huntrix OST Playlist</title>
 
-  <!-- Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+<body>
   <style>
-    :root{
-      --bg-1: #0d0d0d;
-      --bg-2: #1a1a1a;
-      --accent1: #ff00ff;
-      --accent2: #00ffff;
-      --glass: rgba(255,255,255,0.04);
-      --muted: rgba(255,255,255,0.75);
-    }
-
-    *{box-sizing:border-box}
     body{
-      margin:0;
-      font-family:'Poppins',sans-serif;
-      background: linear-gradient(135deg,var(--bg-1),var(--bg-2));
-      color:#fff;
-      min-height:100vh;
-      -webkit-font-smoothing:antialiased;
+    font-family: 'Poppins', sans-serif;
+    background: #111;
+    color: #fff;
+    padding: 2rem;
+    overflow-x: hidden;
+   } header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
     }
-
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:16px;
-      padding:18px 28px;
-      backdrop-filter: blur(6px);
-      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-bottom:1px solid rgba(255,255,255,0.02);
+    .name{
+        color: pink;
+        font-size: 24px;
+        font-weight: 700;
+        text-decoration: none;
     }
-
-    .brand { font-weight:800; letter-spacing:2px; color:var(--accent1); font-size:1.1rem; text-decoration:none; }
-    nav a { color:var(--muted); margin-left:12px; text-decoration:none; font-weight:600; }
-    nav a:hover { color:#fff; text-shadow:0 0 10px rgba(255,0,255,0.12); }
-
+    .nav-items a{
+        color: #fff;
+        text-decoration: none;
+        margin: 0 12px;
+        font-size: 18px;
+    }
+    .nav-items button{
+        padding: 8px 16px;
+        border-radius: 24px;
+        border: none;
+        background: pink;
+        color: #111;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(0,255,255,0.04);
+    }
+    .nav-items button:hover{
+        background: #ff69b4;
+        box-shadow: 0 12px 30px rgba(255,20,147,0.6);
+        color:#fff;
+    }
+    .nav{
+        position: relative;
+    }
+    .nav-items{
+        display: flex;
+        align-items: center;
+    }
+    header .ham {
+    font-size: 26px;
+    color: pink;
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    display: none;
+}
+ #closeMenu {
+    display: none;
+}
+    @media (max-width: 768px){
+        .nav-items{
+        background: #ff69b4;
+        position: fixed;
+        height: 100vh;
+        width: 300px;
+        top: 0;
+        right: -300px;
+        display: flex;
+        flex-direction: column;
+        padding: 40px 30px;
+        transition: right 0.5 ease;
+        z-index: 1000; /* bring to front */
+    }
+    .nav-items.active{
+        right: 0;
+    }
+        header .ham {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1001;
+    }
+    #closeMenu {
+        display: none;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1001;
+        font-size: 26px;
+        color: white;
+        cursor: pointer;
+    }
+    .nav-items a, .nav-items button {
+     display: block;
+    margin: 20px 0;    
+    color: #fff;
+    font-size: 1.2rem;
+    }
+    .nav-items .fa-times{
+        position: absolute;
+        top: 30px;
+        right: 20px;
+        font-size: 26px;
+        cursor: pointer;
+    }
+    .nav .fa-bars{
+        position: absolute;
+        top: 20px;
+        right: 20px;
+    }
+    }
     .container{
       max-width:1100px;
       margin:34px auto;
       padding:24px;
     }
-
     .hero{
       text-align:center;
       margin-bottom:22px;
@@ -58,11 +136,11 @@
       font-size:2rem;
       text-shadow:0 0 18px rgba(255,0,255,0.06);
     }
-    .hero p{ margin:8px 0 0; color:var(--muted); }
+    .hero p{ margin:8px 0 0; }
 
     .now-playing {
       margin-top:10px;
-      color:var(--muted);
+      ;
       font-size:0.95rem;
       text-align:center;
     }
@@ -75,7 +153,7 @@
     }
 
     .song-card{
-      background: var(--glass);
+    
       padding:14px;
       border-radius:14px;
       border:1px solid transparent;
@@ -102,7 +180,7 @@
       width:64px;
       height:64px;
       border-radius:8px;
-      background:linear-gradient(45deg,var(--accent1),var(--accent2));
+      background:#ff69b4;
       display:flex;
       align-items:center;
       justify-content:center;
@@ -116,7 +194,7 @@
       text-align:left;
     }
     .song-title h3{ margin:0; font-size:1.05rem; }
-    .song-title p{ margin:4px 0 0; color:var(--muted); font-size:0.85rem; }
+    .song-title p{ margin:4px 0 0; color: pink; font-size:0.85rem; }
 
     .audio-row{
       display:flex;
@@ -147,44 +225,44 @@
       border:none;
       cursor:pointer;
       font-weight:700;
-      background: linear-gradient(90deg,var(--accent1),var(--accent2));
+      background:pink;
       color:#111;
       box-shadow: 0 8px 24px rgba(0,255,255,0.04);
     }
 
-    .btn.secondary{
-      background:transparent;
-      border:1px solid rgba(255,255,255,0.06);
-      color:var(--muted);
-      font-weight:600;
+    .btn:hover{
+      background: #ff69b4;
+      box-shadow: 0 12px 30px rgba(255,20,147,0.6);
+      color:#fff;
     }
+    
+footer{
+    width: 100%;
+    padding: 30px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    background: #333;
+    color: #fff;
+}
 
-    footer{
-      text-align:center;
-      margin-top:28px;
-      color:var(--muted);
-      font-size:0.9rem;
-    }
-
-    @media (max-width:640px){
-      header{ padding:12px 14px; }
-      .hero h1{ font-size:1.6rem; }
-    }
   </style>
-</head>
-<body>
 
   <header>
-    <a class="brand" href="home.html">HUNTRIX</a>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="character.html" target="_blank">Characters</a>
-      <a href="Gallery.html" target="_blank">Gallery</a>
-      <a href="#" aria-current="page">Songs</a>
-      <a href="about.html">About</a>
-      <a href="#" class="btn secondary" id="download-all" title="Download all (if available)">Download</a>
-    </nav>
-  </header>
+        <a href="#" class="name">HUNTRIX</a>
+        <div class="nav">
+            <div class="nav-items" id="navItems">
+                <a href="index.html">Home</a>
+                <a href="character.html" target="_blank">Characters</a>
+                <a href="Gallery.html" target="_blank">Gallery</a>
+                <a href="#" >Songs</a>
+                <a href="about.html">About</a>
+                <button> Download</button>
+            </div>        
+        </div>
+        <i class="fa fa-bars ham" id="openMenu"></i>
+        <i class="fa fa-times " id="closeMenu"></i>
+    </header>
 
   <main class="container">
     <section class="hero">
@@ -203,6 +281,35 @@
   </main>
 
 <script>
+
+  
+        const openMenu = document.getElementById('openMenu');
+const closeMenu = document.getElementById('closeMenu');
+const navItems = document.querySelector('.nav-items');
+
+// Show menu
+openMenu.addEventListener('click', () => {
+  navItems.classList.add('active');
+  openMenu.style.display = 'none';
+  closeMenu.style.display = 'block';
+});
+
+// Hide menu
+closeMenu.addEventListener('click', () => {
+  navItems.classList.remove('active');
+  closeMenu.style.display = 'none';
+  openMenu.style.display = 'block';
+});
+
+// Optional: Close if nav item is clicked
+navItems.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+    navItems.classList.remove('active');
+    closeMenu.style.display = 'none';
+    openMenu.style.display = 'block';
+  }
+});
+    
   // === Edit this array if you add/remove files ===
   const tracks = [
     {

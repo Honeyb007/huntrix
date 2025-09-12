@@ -6,46 +6,77 @@
   <title>Huntrix — Profile</title>
   <link rel="stylesheet" href="profile.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-  <style>
+</head>
+<style>
 
-    body {
+  body {
   margin: 0;
   font-family: 'Orbitron', sans-serif;
   background-color: #0a0a0f;
   color: #eee;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
 }
 
-.profile-container {
+.profile-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  height: 100vh;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* Left panel */
+.profile-left {
+  flex: 1;
   background: rgba(0, 0, 0, 0.7);
   border: 2px solid #ff3e80;
   border-radius: 15px;
   padding: 30px;
-  width: 400px;
+  margin-right: 20px;
+  box-shadow: 0 0 25px rgba(255, 62, 128, 0.8),
+              0 0 45px rgba(122, 0, 255, 0.6);
+  overflow-y: auto;
+}
+
+.profile-left h1 {
+  margin-bottom: 20px;
   text-align: center;
-  box-shadow: 0 0 25px rgba(255, 62, 128, 0.8), 0 0 45px rgba(122, 0, 255, 0.6);
+  color: #ff3e80;
+  text-shadow: 0 0 10px #ff3e80;
 }
 
-.player-info img {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 3px solid #00f0ff;
-  margin-bottom: 10px;
+.stats p {
+  margin: 5px 0;
 }
 
-.stats, .progress, .replays {
-  margin: 20px 0;
+.bar {
+  width: 100%;
+  height: 15px;
+  background: #222;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+#hp-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ff3e80, #ff7ab8);
+}
+
+#energy-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00f0ff, #39f3ff);
 }
 
 #endings-list li {
   margin: 5px 0;
-  color: #39f3ff;
+  font-size: 14px;
 }
+#endings-list li.goodEnd { color: #39ff14; }
+#endings-list li.badEnd { color: #ff3131; }
+#endings-list li.neutralEnd { color: #9d4edd; }
 
+/* Buttons */
 .actions button {
   background: linear-gradient(135deg, #ff3e80, #7a00ff);
   border: none;
@@ -59,87 +90,201 @@
 
 .actions button:hover {
   transform: scale(1.08);
-  box-shadow: 0 0 20px rgba(122, 0, 255, 1), 0 0 30px rgba(255, 62, 128, 0.8);
+  box-shadow: 0 0 20px rgba(122, 0, 255, 1),
+              0 0 30px rgba(255, 62, 128, 0.8);
+}
+
+/* Right panel */
+.profile-right {
+  flex: 0.8;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.character-card {
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #00f0ff;
+  border-radius: 15px;
+  padding: 50px;
+  text-align: center;
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.7),
+              0 0 45px rgba(0, 200, 255, 0.6);
+}
+
+.character-card img {
+  width: 400px;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 15px;
+  border: 3px solid #ff3e80;
+  margin-bottom: 15px;
+}
+.character-card img:hover{
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(255, 20, 147, 0.6);
 }
 
 
-  </style>
-</head>
+.character-card h2 {
+  color: #39f3ff;
+  text-shadow: 0 0 10px #00f0ff;
+  cursor: pointer;
+}
+.character-card h2:hover{
+  color: hotpink;
+}
+/* Tablets (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .profile-wrapper {
+    padding: 20px;
+  }
+
+  .character-card img {
+    width: 300px;
+    height: 300px;
+  }
+
+  .profile-left {
+    padding: 20px;
+  }
+}
+
+/* Large Phones (max-width: 768px) */
+@media (max-width: 768px) {
+  .profile-wrapper {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .profile-left {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+
+  .character-card img {
+    width: 250px;
+    height: 250px;
+  }
+
+  .character-card {
+    padding: 30px;
+  }
+}
+
+/* Small Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .profile-wrapper {
+    padding: 15px;
+  }
+
+  .profile-left h1 {
+    font-size: 20px;
+  }
+
+  .character-card img {
+    width: 180px;
+    height: 180px;
+  }
+
+  .character-card h2 {
+    font-size: 18px;
+  }
+
+  .actions button {
+    padding: 8px 12px;
+    margin: 5px;
+    font-size: 14px;
+  }
+}
+
+</style>
 <body>
-  <div class="profile-container">
-    <h1>Hunter Profile</h1>
+  <div class="profile-wrapper">
+    <!-- Left Panel -->
+    <div class="profile-left">
+      <h1>Hunter Profile</h1>
 
-    <div class="player-info">
-      <img id="player-avatar" src="images/default.png" alt="Avatar">
-      <h2 id="player-name">Huntrix</h2>
+      <div class="stats">
+        <h2>Stats</h2>
+        <p><strong>HP:</strong> <span id="hp"></span></p>
+        <div class="bar"><div id="hp-bar"></div></div>
+        
+        <p><strong>Energy:</strong> <span id="energy"></span></p>
+        <div class="bar"><div id="energy-bar"></div></div>
+      </div>
+
+      <div class="progress">
+        <h2>Endings Unlocked</h2>
+        <ul id="endings-list"></ul>
+      </div>
+
+      <div class="replays">
+        <p><strong>Replays:</strong> <span id="replays">0</span></p>
+      </div>
+
+      <div class="actions">
+        <button onclick="window.location.href='dashboard.html'">⬅ Back to Dashboard</button>
+        <button onclick="window.location.href='game.html'">▶ Play Again</button>
+      </div>
     </div>
 
-    <div class="stats">
-      <p><strong>HP:</strong> <span id="hp"></span></p>
-      <p><strong>Energy:</strong> <span id="energy"></span></p>
-    </div>
-
-    <div class="progress">
-      <h3>Endings Unlocked</h3>
-      <ul id="endings-list"></ul>
-    </div>
-
-    <div class="replays">
-      <p><strong>Replays:</strong> <span id="replays">0</span></p>
-    </div>
-
-    <div class="actions">
-      <button onclick="window.location.href='dashboard.html'">⬅ Back to Dashboard</button>
-      <button onclick="window.location.href='game.html'">▶ Play Again</button>
+    <!-- Right Panel -->
+    <div class="profile-right">
+      <div class="character-card">
+        <img id="player-avatar" src="images/default.png" alt="Avatar">
+        <h2 id="player-name">Huntrix</h2>
+      </div>
     </div>
   </div>
 
   <script>
-const selected = JSON.parse(localStorage.getItem("selectedCharacter") || "null");
+    const selected = JSON.parse(localStorage.getItem("selectedCharacter") || "null");
 
-let profileData = JSON.parse(localStorage.getItem("huntrix_profile")) || {
-  endings: [],
-  replays: 0,
-  lastHP: 100,
-  lastEnergy: 100
-};
+    let profileData = JSON.parse(localStorage.getItem("huntrix_profile")) || {
+      endings: [],
+      replays: 0,
+      lastHP: 100,
+      lastEnergy: 100
+    };
 
-// Render character info
-if (selected) {
-  document.getElementById("player-name").textContent = selected.name || "Huntrix";
-  document.getElementById("player-avatar").src = selected.image || "images/default.png";
-} else {
-  document.getElementById("player-name").textContent = "Huntrix";
-  document.getElementById("player-avatar").src = "images/default.png";
-}
+    // Render character info
+    if (selected) {
+      document.getElementById("player-name").textContent = selected.name || "Huntrix";
+      document.getElementById("player-avatar").src = selected.image || "images/default.png";
+    }
 
-// Render stats
-document.getElementById("hp").textContent = profileData.lastHP;
-document.getElementById("energy").textContent = profileData.lastEnergy;
-document.getElementById("replays").textContent = profileData.replays;
+    // Stats
+    document.getElementById("hp").textContent = profileData.lastHP;
+    document.getElementById("energy").textContent = profileData.lastEnergy;
+    document.getElementById("replays").textContent = profileData.replays;
 
-// Render endings
-const endingsList = document.getElementById("endings-list");
-if (profileData.endings.length === 0) {
-  endingsList.innerHTML = "<li>No endings unlocked yet.</li>";
-} else {
-  profileData.endings.forEach(e => {
-    const li = document.createElement("li");
-    li.textContent = formatEndingName(e);
-    li.classList.add(e); // add CSS class for color-coding
-    endingsList.appendChild(li);
-  });
-}
+    // Progress bars
+    document.getElementById("hp-bar").style.width = profileData.lastHP + "%";
+    document.getElementById("energy-bar").style.width = profileData.lastEnergy + "%";
 
-// Utility: readable ending names
-function formatEndingName(key) {
-  switch (key) {
-    case "goodEnd": return "🌟 Good Ending";
-    case "badEnd": return "☠️ Bad Ending";
-    case "neutralEnd": return "⚖️ Neutral Ending";
-    default: return key;
-  }
-}
+    // Endings
+    const endingsList = document.getElementById("endings-list");
+    if (profileData.endings.length === 0) {
+      endingsList.innerHTML = "<li>No endings unlocked yet.</li>";
+    } else {
+      profileData.endings.forEach(e => {
+        const li = document.createElement("li");
+        li.textContent = formatEndingName(e);
+        li.classList.add(e);
+        endingsList.appendChild(li);
+      });
+    }
+
+    // Utility
+    function formatEndingName(key) {
+      switch (key) {
+        case "goodEnd": return "🌟 Good Ending";
+        case "badEnd": return "☠️ Bad Ending";
+        case "neutralEnd": return "⚖️ Neutral Ending";
+        default: return key;
+      }
+    }
   </script>
 </body>
 </html>

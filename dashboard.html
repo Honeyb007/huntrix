@@ -58,6 +58,9 @@
         margin: 0 auto;
         box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
+    .player-card:hover {
+        border-color: rgba(194, 62, 194, 0.2);
+    }
 
     .player-card h2 {
         margin: 14px 0 4px;
@@ -78,12 +81,20 @@
         margin-top: 10px;
     }
 
+
     .stat {
         flex: 1;
         background: rgba(255,255,255,0.03);
         padding: 10px;
         border-radius: 10px;
         border: 1px solid rgba(255,255,255,0.03);
+        box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        transition: background .3s, border-color .3s;
+        
+    }
+    .stat:hover {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.1);
     }
 
     .stat h4 { margin: 0; font-size: 0.9rem; }

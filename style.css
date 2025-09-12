@@ -243,6 +243,11 @@ header .ham {
     .home .home-content{
         width: 90%;
     }
+    .home .home-container img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
     .home .home-content h1{
         font-size: 3rem;
         line-height: 50px;
@@ -289,6 +294,9 @@ header .ham {
         font-size: 26px;
         color: white;
         cursor: pointer;
+    }
+    .bg{
+        overflow: hidden;
     }
     .nav-items a, .nav-items button {
      display: block;

@@ -23,6 +23,9 @@
             <button> Download</button>
         </div>
     </div>
+        <i class="fa fa-bars ham" id="openMenu"></i>
+        <i class="fa fa-times " id="closeMenu"></i>
+    
 </header>
 <body class="bg">
     <div class="wrapper">
@@ -48,6 +51,33 @@
     </form>
     </div>
     <script>
+
+           const openMenu = document.getElementById('openMenu');
+const closeMenu = document.getElementById('closeMenu');
+const navItems = document.querySelector('.nav-items');
+
+// Show menu
+openMenu.addEventListener('click', () => {
+  navItems.classList.add('active');
+  openMenu.style.display = 'none';
+  closeMenu.style.display = 'block';
+});
+
+// Hide menu
+closeMenu.addEventListener('click', () => {
+  navItems.classList.remove('active');
+  closeMenu.style.display = 'none';
+  openMenu.style.display = 'block';
+});
+
+// Optional: Close if nav item is clicked
+navItems.addEventListener('click', (e) => {
+  if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+    navItems.classList.remove('active');
+    closeMenu.style.display = 'none';
+    openMenu.style.display = 'block';
+  }
+});
         console.log("Login script loaded ✅");
 
 function hasSelectedCharacter() {

@@ -216,11 +216,6 @@ footer .footer-socials a:hover{
 
 }
 header .ham {
-    font-size: 26px;
-    color: pink;
-    cursor: pointer;
-    position: absolute;
-    top: 20px;
     display: none;
 }
  #closeMenu {
@@ -236,6 +231,9 @@ header .ham {
     
     header .nav .nav-items a{
         margin-left: 20px;
+    }
+    header .ham {
+        display: block;
     }
     section{
         padding: 100px 50px;
@@ -284,6 +282,10 @@ header .ham {
         top: 20px;
         right: 20px;
         z-index: 1001;
+        font-size: 26px;
+        color: pink;
+        cursor: pointer;
+
     }
     #closeMenu {
         display: none;
@@ -296,6 +298,9 @@ header .ham {
         cursor: pointer;
     }
     .bg{
+        overflow: hidden;
+    }
+    .wrapper{
         overflow: hidden;
     }
     .nav-items a, .nav-items button {
@@ -339,6 +344,11 @@ body{
     background: #2696e9;
     overflow-x: hidden;
 }
+::-webkit-scrollbar{
+    width: 10px;
+    background: #2696e9;
+}
+
 .bg{
     display: flex;
     justify-content: center;
@@ -591,5 +601,104 @@ width: 400px;
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+/* Tablets (max-width: 1024px) */
+@media (max-width: 1024px) {
+  header {
+    padding: 15px 25px;
+  }
+
+  .char {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+
+  .char-img img {
+    width: 70%;
+    max-width: 500px;
+  }
+
+  #thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  #thumbs img {
+    width: 90px;
+    height: 90px;
+  }
+}
+
+/* Large phones / Small tablets (max-width: 768px) */
+@media (max-width: 750px) {
+    main {
+        padding: 80px 20px;
+    }
+
+    
+    .char {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+    }
+
+  .char-img img {
+    width: 90%;
+    max-width: 400px;
+  }
+
+  #thumbs img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .text {
+    margin-top: 80px; /* creates breathing room under logo */
+    text-align: center;
+  }
+
+  .text span {
+    font-size: 1.3rem;
+    display: block;   /* forces it onto its own line */
+  }
+
+  .text p {
+    font-size: 0.95rem;
+  }
+}
+
+/* Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  
+  .name {
+    font-size: 1.2rem;
+  }
+
+  .char-img img {
+    width: 100%;
+    max-width: 320px;
+  }
+
+  #thumbs img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .text {
+    margin-top: 70px;
+  }
+
+  .text span {
+    font-size: 1rem;
+    line-height: 1.2;
+    white-space: normal; /* prevents sticking in one line */
+  }
+  .text p {
+    font-size: 0.85rem;
   }
 }

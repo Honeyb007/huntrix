@@ -49,7 +49,7 @@
 
   <script>
 
-         const openMenu = document.getElementById('openMenu');
+ const openMenu = document.getElementById('openMenu');
 const closeMenu = document.getElementById('closeMenu');
 const navItems = document.querySelector('.nav-items');
 
@@ -75,43 +75,66 @@ navItems.addEventListener('click', (e) => {
     openMenu.style.display = 'block';
   }
 });
-    document.getElementById('registerForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      
+// Registration form handling
+document.getElementById("registerForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
 
-      const form = e.target;
-      if (form.password.value !== form.confirmPassword.value) {
-        alert("Passwords do not match!");
-        return;
-      }
+  const form = e.target;
+  const username = form.username.value.trim();
+  const password = form.password.value;
+  const confirmPassword = form.confirmPassword.value;
+
+  // 1️⃣ Simple validation
+  if (!username || !password || !confirmPassword) {
+    alert("Please fill in all fields.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match!");
+    return;
+  }
+
+  // 2️⃣ Disable submit button to prevent double-clicks
   const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('button');
-  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = "Registering..."; }
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Registering...";
+  }
 
-      
+  // 3️⃣ Prepare data
+  const data = { username, password };
 
-      const data = {
-        username: form.username.value,
-        password: form.password.value
-      };
-
-      fetch('https://huntrix-backend-0a1b.onrender.com/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      })
-        .then(res => res.json())
-        .then(response => {
-          console.log('Register response:', response);
-          alert(response.message || 'Registration complete!');
-          if (response.message === "User registered successfully") {
-            window.location.href = 'login.html';
-          }
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          alert('Something went wrong. Try again.');
-        });
+  try {
+    const res = await fetch("https://huntrix-backend-0a1b.onrender.com/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
     });
-  </script>
+
+    const result = await res.json();
+
+    // 4️⃣ Handle response
+    if (!res.ok) {
+      alert(result.error || "Registration failed — try a different username.");
+      return;
+    }
+
+    alert(result.message || "Registration complete!");
+    
+    // 5️⃣ Redirect to login
+    window.location.href = "login.html";
+
+  } catch (err) {
+    console.error("Registration error:", err);
+    alert("❌ Could not contact server. Try again later.");
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Register";
+    }
+  }
+});
+</script>
 </body>
 </html>

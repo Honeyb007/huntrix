@@ -1,289 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Huntrix — Profile</title>
-  <link rel="stylesheet" href="profile.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-</head>
-<style>
+  <meta name="theme-color" content="#0a0a0f" />
+  <style>
+    :root{
+      --bg:#0a0a0f;
+      --panel: rgba(0,0,0,0.72);
+      --accent-pink: #ff3e80;
+      --accent-blue: #00f0ff;
+      --muted: #bdbdbd;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      font-family:'Orbitron', system-ui, sans-serif;
+      background: linear-gradient(180deg, #050507 0%, #0a0a0f 100%);
+      color:#eee;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
 
-  body {
-  margin: 0;
-  font-family: 'Orbitron', sans-serif;
-  background-color: #0a0a0f;
-  color: #eee;
-}
+    .profile-wrapper{
+      display:flex;
+      gap:24px;
+      align-items:stretch;
+      justify-content:space-between;
+      padding:32px;
+      height:100vh;
+    }
 
-.profile-wrapper {
+    /* Left panel */
+    .profile-left{
+      flex:1;
+      background:var(--panel);
+      border-radius:14px;
+      padding:28px;
+      border:2px solid rgba(255,62,128,0.06);
+      box-shadow: 0 6px 30px rgba(0,0,0,0.7), inset 0 0 40px rgba(255,62,128,0.03);
+      overflow:auto;
+    }
+
+    .profile-left h1{
+      margin:0 0 18px 0;
+      text-align:center;
+      color:var(--accent-pink);
+      text-shadow:0 0 12px rgba(255,62,128,0.2);
+      font-size:28px;
+      letter-spacing:1px;
+    }
+
+    .stats h2, .progress h2 { margin:12px 0 8px; color:var(--accent-blue); font-size:14px; opacity:0.95 }
+    .stats p{ margin:6px 0; color:var(--muted); font-size:15px }
+
+    .bar {
+      width:100%;
+      height:14px;
+      background:#111;
+      border-radius:8px;
+      margin:8px 0 12px;
+      overflow:hidden;
+      box-shadow: inset 0 -3px 6px rgba(0,0,0,0.6);
+    }
+    #hp-bar{ height:100%; width:100%; background:linear-gradient(90deg,#ff3e80,#ff7ab8); transition:width .35s ease }
+    #energy-bar{ height:100%; width:100%; background:linear-gradient(90deg,#00f0ff,#39f3ff); transition:width .35s ease }
+
+    #endings-list{ padding-left:16px; margin:8px 0 }
+    #endings-list li{ margin:6px 0; font-size:14px; opacity:0.95; padding:6px 10px; border-radius:8px; background:rgba(255,255,255,0.02) }
+    #endings-list li.goodEnd{ color:#c7ffd1; border-left:4px solid #39ff14 }
+    #endings-list li.badEnd{ color:#ffbfc3; border-left:4px solid #ff3131 }
+    #endings-list li.neutralEnd{ color:#e6d0ff; border-left:4px solid #9d4edd }
+
+    .meta-row{ display:flex; gap:12px; align-items:center; margin-top:12px }
+    .meta-card{ padding:10px 12px; background:rgba(255,255,255,0.02); border-radius:10px; font-size:14px }
+
+    .actions{ margin-top:18px; display:flex; flex-wrap:wrap; gap:10px; }
+    .actions button{
+      background: linear-gradient(135deg, var(--accent-pink), #7a00ff);
+      border:none;
+      color:white;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+      box-shadow: 0 6px 18px rgba(122,0,255,0.12);
+      transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .actions button.secondary{ background: linear-gradient(90deg,#222,#333); border:1px solid rgba(255,255,255,0.04); box-shadow:none; color:var(--muted) }
+    .actions button:hover{ transform:translateY(-4px) }
+
+    /* Right panel */
+    .profile-right{ flex:0.85; display:flex; align-items:center; justify-content:center }
+    .character-card{
+      width:100%;
+      max-width:520px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.6));
+      border-radius:14px;
+      padding:28px;
+      text-align:center;
+      border:2px solid rgba(0,240,255,0.06);
+      box-shadow: 0 10px 40px rgba(0,240,255,0.04);
+    }
+    .character-card img{
+      width:360px;
+      height:360px;
+      object-fit:cover;
+      border-radius:12px;
+      border:3px solid rgba(255,62,128,0.12);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .character-card img:hover{ transform:scale(1.03); box-shadow: 0 14px 40px rgba(0,0,0,0.6) }
+    .character-card h2{ margin:12px 0 0; color:var(--accent-blue); text-shadow:0 0 10px rgba(0,240,255,0.08) }
+
+    /* --- Toast UI --- */
+#toast-container {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
   display: flex;
-  justify-content: space-between;
-  align-items: stretch;
-  height: 100vh;
-  padding: 40px;
-  box-sizing: border-box;
-}
-
-/* Left panel */
-.profile-left {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.7);
-  border: 2px solid #ff3e80;
-  border-radius: 15px;
-  padding: 30px;
-  margin-right: 20px;
-  box-shadow: 0 0 25px rgba(255, 62, 128, 0.8),
-              0 0 45px rgba(122, 0, 255, 0.6);
-  overflow-y: auto;
-}
-
-.profile-left h1 {
-  margin-bottom: 20px;
-  text-align: center;
-  color: #ff3e80;
-  text-shadow: 0 0 10px #ff3e80;
-}
-
-.stats p {
-  margin: 5px 0;
-}
-
-.bar {
-  width: 100%;
-  height: 15px;
-  background: #222;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  overflow: hidden;
-}
-
-#hp-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #ff3e80, #ff7ab8);
-}
-
-#energy-bar {
-  height: 100%;
-  background: linear-gradient(90deg, #00f0ff, #39f3ff);
-}
-
-#endings-list li {
-  margin: 5px 0;
-  font-size: 14px;
-}
-#endings-list li.goodEnd { color: #39ff14; }
-#endings-list li.badEnd { color: #ff3131; }
-#endings-list li.neutralEnd { color: #9d4edd; }
-
-/* Buttons */
-.actions button {
-  background: linear-gradient(135deg, #ff3e80, #7a00ff);
-  border: none;
-  color: #fff;
-  padding: 10px 15px;
-  margin: 10px;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: transform 0.25s, box-shadow 0.3s;
-}
-
-.actions button:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 20px rgba(122, 0, 255, 1),
-              0 0 30px rgba(255, 62, 128, 0.8);
-}
-
-/* Right panel */
-.profile-right {
-  flex: 0.8;
-  display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 99999;
+  pointer-events: none;
+  width: auto;
+  max-width: calc(100% - 40px);
   align-items: center;
 }
 
-.character-card {
-  background: rgba(0, 0, 0, 0.8);
-  border: 2px solid #00f0ff;
-  border-radius: 15px;
-  padding: 50px;
-  text-align: center;
-  box-shadow: 0 0 25px rgba(0, 240, 255, 0.7),
-              0 0 45px rgba(0, 200, 255, 0.6);
+.toast {
+  pointer-events: auto;
+  min-width: 180px;
+  max-width: 720px;
+  background: rgba(10,10,12,0.92);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6), 0 4px 18px rgba(122,0,255,0.08);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-weight:600;
+  transform-origin: bottom center;
+  animation: toastIn .22s cubic-bezier(.2,.9,.2,1);
+  border-left: 4px solid transparent;
 }
 
-.character-card img {
-  width: 400px;
-  height: 400px;
-  object-fit: cover;
-  border-radius: 15px;
-  border: 3px solid #ff3e80;
-  margin-bottom: 15px;
-}
-.character-card img:hover{
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(255, 20, 147, 0.6);
+.toast .emoji { font-size:18px; opacity:0.95; }
+
+.toast.info { border-left-color: #00bfff; }
+.toast.success { border-left-color: #39ff14; }
+.toast.error { border-left-color: #ff3131; }
+
+@keyframes toastIn {
+  from { transform: translateY(8px) scale(.98); opacity:0 }
+  to { transform: translateY(0) scale(1); opacity:1 }
 }
 
 
-.character-card h2 {
-  color: #39f3ff;
-  text-shadow: 0 0 10px #00f0ff;
-  cursor: pointer;
-}
-.character-card h2:hover{
-  color: hotpink;
-}
-/* Tablets (max-width: 1024px) */
-@media (max-width: 1024px) {
-  .profile-wrapper {
-    padding: 20px;
-  }
+    /* small screens */
+    @media (max-width:900px){
+      .profile-wrapper{ flex-direction:column; padding:18px; height:auto }
+      .character-card img{ width:260px; height:260px }
+      .profile-right{ order: -1; margin-bottom:12px }
+    }
 
-  .character-card img {
-    width: 300px;
-    height: 300px;
-  }
-
-  .profile-left {
-    padding: 20px;
-  }
-}
-
-/* Large Phones (max-width: 768px) */
-@media (max-width: 768px) {
-  .profile-wrapper {
-    flex-direction: column;
-    height: auto;
-  }
-
-  .profile-left {
-    margin-right: 0;
-    margin-bottom: 20px;
-  }
-
-  .character-card img {
-    width: 250px;
-    height: 250px;
-  }
-
-  .character-card {
-    padding: 30px;
-  }
-}
-
-/* Small Phones (max-width: 480px) */
-@media (max-width: 480px) {
-  .profile-wrapper {
-    padding: 15px;
-  }
-
-  .profile-left h1 {
-    font-size: 20px;
-  }
-
-  .character-card img {
-    width: 180px;
-    height: 180px;
-  }
-
-  .character-card h2 {
-    font-size: 18px;
-  }
-
-  .actions button {
-    padding: 8px 12px;
-    margin: 5px;
-    font-size: 14px;
-  }
-}
-
-</style>
+  </style>
+</head>
 <body>
   <div class="profile-wrapper">
-    <!-- Left Panel -->
     <div class="profile-left">
       <h1>Hunter Profile</h1>
 
       <div class="stats">
         <h2>Stats</h2>
-        <p><strong>HP:</strong> <span id="hp"></span></p>
+        <p><strong>HP:</strong> <span id="hp">—</span></p>
         <div class="bar"><div id="hp-bar"></div></div>
-        
-        <p><strong>Energy:</strong> <span id="energy"></span></p>
+
+        <p><strong>Energy:</strong> <span id="energy">—</span></p>
         <div class="bar"><div id="energy-bar"></div></div>
+
+        <div class="meta-row" style="margin-top:8px">
+          <div class="meta-card"><strong>Last Scene</strong><div id="last-scene" style="opacity:.9;margin-top:6px">—</div></div>
+          <div class="meta-card"><strong>Saved</strong><div id="saved-ts" style="opacity:.9;margin-top:6px">—</div></div>
+        </div>
       </div>
 
       <div class="progress">
         <h2>Endings Unlocked</h2>
-        <ul id="endings-list"></ul>
+        <ul id="endings-list"><li style="opacity:.6">No endings unlocked yet.</li></ul>
       </div>
 
-      <div class="replays">
-        <p><strong>Replays:</strong> <span id="replays">0</span></p>
+      <div class="replays" style="margin-top:14px">
+       <p><strong>Replays:</strong> <span id="replays">0</span></p>
       </div>
 
-      <div class="actions">
-        <button onclick="window.location.href='dashboard.html'">⬅ Back to Dashboard</button>
-        <button onclick="window.location.href='game.html'">▶ Play Again</button>
-      </div>
+      <div class="actions" style="margin-top:18px">
+  <button id="back">⬅ Back to Dashboard</button>
+  <button id="play">▶ Play Again</button>
+  <button id="resume">⏭️ Resume Last Save</button>
+  <button id="clear" class="secondary">🗑️ Clear Save</button>
+  <button id="export" class="secondary">⬇️ Export Save (JSON)</button>
+</div>
     </div>
-
-    <!-- Right Panel -->
     <div class="profile-right">
       <div class="character-card">
-        <img id="player-avatar" src="images/default.png" alt="Avatar">
+        <img id="player-avatar" src="images/default.png" alt="Avatar" />
         <h2 id="player-name">Huntrix</h2>
+        <p style="opacity:.7;margin-top:8px;font-size:13px">Selected character — click <em>Edit</em> in-game to change.</p>
       </div>
     </div>
   </div>
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <script>
-    const selected = JSON.parse(localStorage.getItem("selectedCharacter") || "null");
+    // Toast notification function
+function showToast(message, type = 'info', duration = 1500) {
+  const container = document.getElementById('toast-container');
+  if (!container) return;
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span class="emoji">${
+    type === 'success' ? '✅' : type === 'error' ? '❌' : 'ℹ️'
+  }</span> ${message}`;
+  container.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    setTimeout(() => toast.remove(), 400);
+  }, duration);
+}
+    // grab saved profile and selectedCharacter
+    const rawProfile = localStorage.getItem('huntrix_profile');
+    let profileData = rawProfile ? JSON.parse(rawProfile) : null;
 
-    let profileData = JSON.parse(localStorage.getItem("huntrix_profile")) || {
-      endings: [],
-      replays: 0,
-      lastHP: 100,
-      lastEnergy: 100
-    };
-
-    // Render character info
-    if (selected) {
-      document.getElementById("player-name").textContent = selected.name || "Huntrix";
-      document.getElementById("player-avatar").src = selected.image || "images/default.png";
+    // default structure fallback
+    if (!profileData) {
+      profileData = {
+        endings: [],
+        replays: 0,
+        lastHP: 100,
+        lastEnergy: 100,
+        lastScene: null,
+        timestamp: null
+      };
     }
 
-    // Stats
-    document.getElementById("hp").textContent = profileData.lastHP;
-    document.getElementById("energy").textContent = profileData.lastEnergy;
-    document.getElementById("replays").textContent = profileData.replays;
+    // selectedCharacter fallback
+    const selected = JSON.parse(localStorage.getItem('selectedCharacter') || 'null');
 
-    // Progress bars
-    document.getElementById("hp-bar").style.width = profileData.lastHP + "%";
-    document.getElementById("energy-bar").style.width = profileData.lastEnergy + "%";
-
-    // Endings
-    const endingsList = document.getElementById("endings-list");
-    if (profileData.endings.length === 0) {
-      endingsList.innerHTML = "<li>No endings unlocked yet.</li>";
+    // render character
+    if (selected) {
+      document.getElementById('player-name').textContent = selected.name || 'Huntrix';
+      document.getElementById('player-avatar').src = selected.image || 'images/default.png';
     } else {
-      profileData.endings.forEach(e => {
-        const li = document.createElement("li");
-        li.textContent = formatEndingName(e);
-        li.classList.add(e);
+      document.getElementById('player-name').textContent = 'Stranger';
+      document.getElementById('player-avatar').src = 'images/default.png';
+    }
+
+    // render stats
+    const hpSpan = document.getElementById('hp');
+    const energySpan = document.getElementById('energy');
+    const hpBar = document.getElementById('hp-bar');
+    const energyBar = document.getElementById('energy-bar');
+    const replaysSpan = document.getElementById('replays');
+
+    hpSpan.textContent = profileData.lastHP ?? 0;
+    energySpan.textContent = profileData.lastEnergy ?? 0;
+    replaysSpan.textContent = profileData.replays ?? 0;
+    hpBar.style.width = (profileData.lastHP ?? 0) + '%';
+    energyBar.style.width = (profileData.lastEnergy ?? 0) + '%';
+
+    // last scene + timestamp
+    document.getElementById('last-scene').textContent = prettifySceneKey(profileData.lastScene) || '—';
+    document.getElementById('saved-ts').textContent = profileData.timestamp ? (new Date(profileData.timestamp)).toLocaleString() : '—';
+
+    // endings list
+    const endingsList = document.getElementById('endings-list');
+    endingsList.innerHTML = '';
+    if (!profileData.endings || profileData.endings.length === 0) {
+      endingsList.innerHTML = '<li style="opacity:.6">No endings unlocked yet.</li>';
+    } else {
+      profileData.endings.forEach(key => {
+        const li = document.createElement('li');
+        const cls = classifyEnding(key);
+        li.classList.add(cls);
+        li.textContent = formatEndingName(key);
         endingsList.appendChild(li);
       });
     }
 
-    // Utility
+    // UI wiring
+document.getElementById('resume').addEventListener('click', () => {
+  const rawProfile = localStorage.getItem('huntrix_profile');
+  let profile = rawProfile ? JSON.parse(rawProfile) : null;
+  const lastScene = profile && profile.lastScene;
+  if (lastScene) {
+    // Set resume scene for game.js to pick up
+    localStorage.setItem('huntrix_resume_scene', lastScene);
+    showToast('Resuming game…', 'info', 1000);
+    setTimeout(() => {
+      window.location.href = 'game.html';
+    }, 600);
+  } else {
+    showToast('No saved game to resume.', 'error', 2000);
+  }
+});
+
+// Back button
+document.getElementById('back').addEventListener('click', () => {
+  window.location.href = 'dashboard.html';
+});
+
+// Play new game
+document.getElementById('play').addEventListener('click', () => {
+  showToast('Starting new game…', 'info', 1000);
+  setTimeout(() => {
+    window.location.href = 'game.html';
+  }, 600);
+});
+
+// Clear save
+document.getElementById('clear').addEventListener('click', () => {
+  if (!confirm('Clear Huntrix save? This will remove progress and endings.')) return;
+  localStorage.removeItem('huntrix_profile');
+  localStorage.removeItem('huntrix_resume_scene');
+  showToast('Save cleared.', 'success', 1500);
+
+
+
+      // optional: keep selectedCharacter
+      profileData = { endings: [], replays: 0, lastHP: 100, lastEnergy: 100, lastScene: null, timestamp: null };
+      // refresh UI
+      hpSpan.textContent = profileData.lastHP;
+      energySpan.textContent = profileData.lastEnergy;
+      hpBar.style.width = profileData.lastHP + '%';
+      energyBar.style.width = profileData.lastEnergy + '%';
+      replaysSpan.textContent = 0;
+      endingsList.innerHTML = '<li style="opacity:.6">No endings unlocked yet.</li>';
+      document.getElementById('saved-ts').textContent = '—';
+      document.getElementById('last-scene').textContent = '—';
+    });
+
+    document.getElementById('export').addEventListener('click', ()=> {
+      const dataStr = JSON.stringify(profileData, null, 2);
+      const blob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'huntrix_profile.json'; document.body.appendChild(a);
+      a.click(); a.remove(); URL.revokeObjectURL(url);
+    });
+
+    // small helpers
     function formatEndingName(key) {
-      switch (key) {
-        case "goodEnd": return "🌟 Good Ending";
-        case "badEnd": return "☠️ Bad Ending";
-        case "neutralEnd": return "⚖️ Neutral Ending";
-        default: return key;
-      }
+      if (!key) return 'Unknown';
+      // map known story endings to pretty names
+      const map = {
+        'endScene': '🌅 Epilogue — Dawn',
+        'sacrificeScene': '☠️ Sacrifice — Game Over',
+        'goodEnd': '🌟 Good Ending',
+        'badEnd': '☠️ Bad Ending',
+        'neutralEnd': '⚖️ Neutral Ending'
+      };
+      if (map[key]) return map[key];
+      // fallback: prettify key like bladeWhisper -> Blade Whisper
+      return key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').replace(/(^\w)|(\s\w)/g, c => c.toUpperCase());
+    }
+
+    function classifyEnding(key) {
+      if (!key) return 'neutralEnd';
+      const badKeywords = ['sacrifice', 'bad', 'death', 'gameover'];
+      const goodKeywords = ['end', 'final', 'victory', 'epilogue', 'dawn', 'endScene'];
+      // if key matches exact known bad/good names
+      if (key === 'sacrificeScene' || key.toLowerCase().includes('sacrifice')) return 'badEnd';
+      if (key === 'endScene' || key.toLowerCase().includes('victory') || key.toLowerCase().includes('dawn')) return 'goodEnd';
+      // fallback rules
+      for (const k of badKeywords) if (key.toLowerCase().includes(k)) return 'badEnd';
+      for (const k of goodKeywords) if (key.toLowerCase().includes(k)) return 'goodEnd';
+      return 'neutralEnd';
+    }
+
+    function prettifySceneKey(key) {
+      if (!key) return null;
+      return key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ').replace(/^./, s => s.toUpperCase());
+    }
+
+    async function fetchIfExists(path){
+      try {
+        const res = await fetch(path, { method: 'HEAD' });
+        return res.ok;
+      } catch(e){ return false; }
     }
   </script>
 </body>

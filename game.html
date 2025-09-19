@@ -8,30 +8,45 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="sidebar">
-    <div class="player">
-      <img id="hud-img" src="images/default.png" alt="Character" />
-        <h2 id="hud-name">Loading...</h2>
-      <div id="stats">
-        <div>HP</div>
-        <div class="bar"><div id="hp-bar" class="hp-fill"></div></div>
-        <div>Energy</div>
-        <div class="bar"><div id="energy-bar" class="energy-fill"></div></div>
-      </div>
-    </div>
-    <div class="music-panel">
-      <h3>Now Playing</h3>
-      <p id="music-title">None</p>
-    </div>
-  </div>
+  <aside class="sidebar">
+<div class="player">
+<img id="hud-img" src="images/default.png" alt="Character" />
+<h2 id="hud-name">Loading...</h2>
+<div id="stats">
+<div>HP</div>
+<div class="bar"><div id="hp-bar" class="hp-fill"></div></div>
+<div>Energy</div>
+<div class="bar"><div id="en-bar" class="en-fill"></div></div>
+</div>
+</div>
+<div class="music-panel panel">
+<strong>Now Playing</strong>
+<div id="music-title">None</div>
+<div style="margin-top:8px;display:flex;gap:6px;justify-content:center">
+<button id="music-toggle">▶</button>
+<button id="music-mute">Mute</button>
+</div>
+<div class="sidebar-actions" style="margin-top:12px; text-align:center;">
+  <button id="quit-btn" class="quiet-btn" title="Quit game">⏏️ Quit</button>
+</div>
+</div>
+</aside>
 
-  <div class="content" id="game-area">
-    <div id="story"></div>
-    <div id="choices"></div>
-  </div>
-  
-    
 
+<main class="content" id="game-area">
+<div class="panel" id="dialog" class="dialog-hidden">
+<img id="dialog-img" src="" alt="portrait" />
+<div class="dialog-body">
+<div id="dialog-char" class="dialog-char"></div>
+<div id="dialog-text" class="dialog-text"></div>
+<div style="display:flex;gap:8px;align-items:center;justify-content:flex-end">
+<button id="dialog-next" class="dialog-next">Next ▶</button>
+</div>
+</div>
+</div>
+<div class="panel" id="story"> </div>
+<ul id="choices" class="panel" style="display:flex;"> </ul>
+</main>
 
   <script src="game.js"></script>
 </body>

@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "Rumi",
-    "image": "./images/Rumi.jpg",
+    "image": "./images/rumi.jpg",
     "description": "Fearless leader with sharp instincts, half demon and killer voice.",
     "stats": { "hp": 2000, "atk": 500, "spd": 500 }
 

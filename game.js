@@ -5,6 +5,15 @@ const player = { hp: 100, energy: 100 };
 
 // At the very end of the file, after all functions are defined:
 window.addEventListener('DOMContentLoaded', function() {
+  // Secret menu icon triggers menuSceneSecret
+  const menuSecretIcon = document.getElementById('menu-secret-icon');
+  if (menuSecretIcon) {
+    menuSecretIcon.addEventListener('click', function() {
+      showScene('menuSceneSecret');
+    });
+    menuSecretIcon.addEventListener('mouseenter', function() { menuSecretIcon.style.opacity = 1; });
+    menuSecretIcon.addEventListener('mouseleave', function() { menuSecretIcon.style.opacity = 0.5; });
+  }
   // Try to resume from profile, else start new game
   if (typeof tryResumeFromProfile === 'function' && tryResumeFromProfile()) {
     // Resumed, do not start new game
@@ -485,6 +494,7 @@ const scenes = {
   sacrificeScene: {
     type: "narration",
     text: "You press the blade into your own chest. Power surges, fire floods your veins. The demon horde collapses with your final scream. \n\nThe city is saved, but your story ends here — sung in whispers and tears.",
+    end: true,
     choices: [
       { text: "Accept your fate", next: "credits" }
     ]
@@ -496,7 +506,7 @@ const scenes = {
       { char: "Narrator", img: null, text: "The blade hums, pulling you toward a side alley invisible in the rain. Neon bends around it; whispers coil like smoke." },
       { char: "Jisoo", img: "./images/jisooPortrait.jpg", text: "I don’t like this, but I don’t leave friends behind." },
       { char: "You", img: "./images/playerPortrait.png", text: "Then we go. Quietly." }
-    ],
+    ], 
     text: "The blade hums, pulling you toward a side alley invisible in the rain.",
     bg: "./images/hidden_alley.jpg",
     music: { file: "music/whisper_hidden.mp3", title: "Hidden Path" },
@@ -663,6 +673,7 @@ const scenes = {
   hiddenEnd: {
     type: "narration",
     text: "The blade fuses to your soul, no longer weapon, but voice. You step through the Abyss Gate, into a realm beyond mortal fire.\n\nWhispers crown you. You are no longer hunter — you are the thing even demons fear.",
+    end: true,
     choices: [
       { text: "Embrace the Abyss", next: "credits" }
     ]
@@ -677,6 +688,7 @@ const scenes = {
     text: "🌅 Dawn breaks. Rain-slicked streets shine with neon reflection.",
     bg: "./images/end.jpg",
     music: { file: "music/end.mp3", title: "New Dawn" },
+    end: true,
     onEnter: (st) => {
       if (st && st.hiddenQuestUnlocked) {
         // append flavor text if hidden route was completed
@@ -1039,12 +1051,15 @@ function loadCharacter() {
 function renderDialogLine() {
   const line = dialogScene.dialog[dialogIndex];
   if (!line) {
+    dialogNext.style.display = 'none';
     dialogWrap.classList.add('dialog-hidden');
     storyEl.textContent = dialogScene.text || '';
     renderChoices(dialogScene);
     // Save checkpoint on finishing dialog scene
     saveProfile(findSceneKey(dialogScene));
     return;
+  } else {
+    dialogNext.style.display = '';
   }
 
   // char may be a string (e.g. "You" or "Jisoo") or a function that returns a string
@@ -1070,12 +1085,13 @@ function renderDialogLine() {
     imgVal = getPlayerPortrait();
   }
 
-  // apply portrait DOM
-  if (imgVal) {
+  // Hide portrait if no dialog, or if speaker is 'Narrator'
+  if (!imgVal || (charVal && String(charVal).toLowerCase() === 'narrator')) {
+    dialogImg.src = '';
+    dialogImg.style.display = 'none';
+  } else {
     dialogImg.src = imgVal;
     dialogImg.style.display = 'block';
-  } else {
-    dialogImg.style.display = 'none';
   }
 
   dialogChar.textContent = charVal || '';
@@ -1091,7 +1107,12 @@ function renderDialogLine() {
 }
 function hideDialog() {
   dialogWrap.classList.add('dialog-hidden');
-  dialogImg.src = ''; dialogChar.textContent = ''; dialogText.textContent = ''; dialogNext.onclick = null;
+  dialogImg.src = '';
+  dialogImg.style.display = 'none';
+  dialogChar.textContent = '';
+  dialogText.textContent = '';
+  dialogNext.onclick = null;
+  dialogNext.style.display = 'none';
 }
 
 function findSceneKey(obj) {
@@ -1145,7 +1166,11 @@ function showScene(key) {
     }
   }
 
-  if (player.hp <= 0 || player.energy <= 0) { return showScene('sacrificeScene'); }
+  // Don't redirect to sacrificeScene if in an ending scene
+  const endingScenes = ['sacrificeScene', 'credits', 'hiddenEnd', 'endScene'];
+  if ((player.hp <= 0 || player.energy <= 0) && !endingScenes.includes(key)) {
+    return showScene('sacrificeScene');
+  }
 
   // set background
   document.getElementById('game-area').style.backgroundImage = scene.bg ? `url('${scene.bg}')` : '';

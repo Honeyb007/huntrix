@@ -4,7 +4,7 @@
     "name": "Rumi",
     "image": "./images/Rumi.jpg",
     "description": "Fearless leader with sharp instincts, half demon and killer voice.",
-      "stats": { "hp": 2000, "atk": 500, "spd": 500 }
+    "stats": { "hp": 2000, "atk": 500, "spd": 500 }
 
 
   },
@@ -13,7 +13,7 @@
     "name": "Mira",
     "image": "./images/mira.jpg",
     "description": "Cool, idgaf attitude, lead choreographer, loud fashion — deadly and fabulous.",
-      "stats": { "hp": 1500, "atk": 1000, "spd": 500 }
+      "stats": { "hp": 1000, "atk": 1000, "spd": 500 }
 
   },
   {

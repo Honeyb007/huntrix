@@ -281,10 +281,10 @@ function showToast(message, type = 'info', duration = 1500) {
     // endings list
     const endingsList = document.getElementById('endings-list');
     endingsList.innerHTML = '';
-    if (!profileData.endings || profileData.endings.length === 0) {
+    if (!profileData.endings || profileData.endings.filter(key => key !== 'quitScene').length === 0) {
       endingsList.innerHTML = '<li style="opacity:.6">No endings unlocked yet.</li>';
     } else {
-      profileData.endings.forEach(key => {
+      profileData.endings.filter(key => key !== 'quitScene').forEach(key => {
         const li = document.createElement('li');
         const cls = classifyEnding(key);
         li.classList.add(cls);
